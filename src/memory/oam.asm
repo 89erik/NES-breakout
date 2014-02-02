@@ -8,9 +8,17 @@
 	player_tile:				.byte 0
 	player_attribute:			.byte 0
 	player_x:					.byte 0
+								.byte 0,0,0,0	; copy
+								.byte 0,0,0,0	; copy
+	
+	ball_y:					.byte 0
+	ball_tile:				.byte 0
+	ball_attribute:			.byte 0
+	ball_x:					.byte 0
 
-									 ;L  H
-	p1_score_y:					.byte 0, 0
-	p1_score_tile:				.byte 0, 0
-	p1_score_attribute:			.byte 0, 0
-	p1_score_x:					.byte 0, 0
+	p1_score_y:					.byte 0
+	p1_score_tile:				.byte 0
+	p1_score_attribute:			.byte 0
+	p1_score_x:					.byte 0
+								.byte 0,0,0,0	; high digit
+								

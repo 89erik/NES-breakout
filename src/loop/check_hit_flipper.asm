@@ -6,22 +6,9 @@
 ; Y = -1 means left racket
 ; Y = 1 means right racket
 CheckHitFlipper:
-		STY last_racket_hit
-
-		CPY #-1
-		BEQ @left_racket
-		CPY #1
-		BEQ @right_racket
+		LDA racket_pos
+		STA <racket			; TODO: why is this a separate variable?
 		
-	@left_racket:
-		LDA left_racket_pos
-		STA <racket
-		JMP @racket_selected
-	@right_racket:
-		LDA right_racket_pos
-		STA <racket
-		;JMP @racket_selected
-	@racket_selected:
 
 		; -[SET UPPER LIMIT]-
 		LDA racket
@@ -54,9 +41,9 @@ CheckHitFlipper:
 	; -[HIT]-
 	@racket_hit:
 		;set scroll
-		LDA scroll_direction
-		EOR #$FF
-		STA scroll_direction
+		;LDA scroll_direction
+		;EOR #$FF
+		;STA scroll_direction
 	
 		LDA ball_y
 		SEC
@@ -71,11 +58,11 @@ CheckHitFlipper:
 		JMP @hit_check_complete
 	@high_hit:
 		LDA #1
-		STA delta_racket_hit_positive
+		;STA delta_racket_hit_positive
 		JMP @hit_check_complete
 	@low_hit:
 		LDA #0
-		STA delta_racket_hit_positive
+		;STA delta_racket_hit_positive
 		LDA #1
 		;JMP @hit_check_complete
 		

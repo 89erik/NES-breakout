@@ -1,21 +1,17 @@
 ; ---[ MOVE BALL ]---
 	; -[UPDATE X]-
-	LDA ball_x
-	CLC
-	ADC x_vector
-	TAX
-	STA ball_x
-	STA ball_x ; update OAM
+	LDA ball_x		; Load x position
+	CLC				; Clear carry bit
+	ADC x_vector	; Add vector to position
+	TAX				; Copy A to X
+	STA ball_x 		; Update OAM
 	
 	; -[UPDATE Y]-
-	LDA ball_y
-	CLC
-	ADC y_vector
-	TAY
-	STA ball_y
-	STA ball_y ; update OAM	
-	
-	
+	LDA ball_y		; Load y position
+	CLC				; Clear carry bit
+	ADC y_vector	; Add vector to position
+	TAY				; Copy A to X
+	STA ball_y 		; Update OAM	
 	
 	
 ; ---[ HIT ONE OF THE WALLS? ]---
@@ -43,26 +39,26 @@
 
 	; -[RACKET HIT]-
 		
-	; -[CHECK AND SET PANICK MODE]-
-		LDA panick_mode
+	; -[CHECK AND SET PANIC MODE]-
+		LDA panic_mode
 		CMP #1
-		BEQ @end_of_panick_check
+		BEQ @end_of_panic_check
 		
-		LDX hit_count
-		INX
-		STX hit_count
+		;LDX hit_count
+		;INX
+		;STX hit_count
 		CPX #5
-		JMP @end_of_panick_check ;BCC @end_of_panick_check ; X<5					;PANIC MODE DISABLED
+		JMP @end_of_panic_check ;BCC @end_of_panic_check ; X<5					;PANIC MODE DISABLED
 		LDA #1
-		STA panick_mode ; Enable panick mode
-	@end_of_panick_check:
+		STA panic_mode ; Enable panic mode
+	@end_of_panic_check:
 		
 		
 		
 	; -[UPDATE Y-VECTOR]-
-		LDA delta_racket_hit_positive
-		CMP #1
-		BEQ @negative_vector
+		;LDA delta_racket_hit_positive
+		;CMP #1
+		;BEQ @negative_vector
 		
 	;@positive_vector
 		LDA y_vector
@@ -103,7 +99,7 @@ TestEdgeY:
 	CPY #0
 	BEQ @roof_floor_hit
 	
-	JMP MainLoop ; No hit
+	JMP @end_of_task ; No hit
 	
 	
 	; ---[ROOF/FLOOR HIT]---
@@ -112,4 +108,5 @@ TestEdgeY:
 	SEC
 	SBC y_vector
 	STA y_vector
-	JMP MainLoop
+	
+@end_of_task:

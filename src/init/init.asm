@@ -31,7 +31,7 @@
 		BNE @load_palette
 
 ; -[FILL BACKGROUND]-
-	.include "fill_background.asm"
+	.include "init/fill_background.asm"
 
 
 ; -[INIT STACK]-
@@ -41,65 +41,42 @@
 ; -[INIT STATE VARIABLES]-
 	LDA #0
 	STA bg_color
-	STA x_scroll
-	STA y_scroll
-	STA scroll_direction
 
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
 	; BALL
 		LDA #2
 		STA ball_tile
-		LDA #%00000001; (Palett 1)
+		LDA #%00000001; (Palette 1)
 		STA ball_attribute
 		
-	; RIGHT RACKET
+	; PLAYER RACKET
 		LDX #4 ; first offset
 		LDY #8 ; second offset
 	
 		LDA #1 ; tile
-		STA right_racket_tile
-		STA right_racket_tile, X
-		STA right_racket_tile, Y
+		STA player_tile
+		STA player_tile, X
+		STA player_tile, Y
 		
 		LDA #0; flags
-		STA right_racket_attribute
-		STA right_racket_attribute, X
-		STA right_racket_attribute, Y
-		
-	; LEFT RACKET
-		;LDX #4 ; first offset
-		;LDY #8 ; second offset
-		
-		LDA #1 ; tile
-		STA left_racket_tile
-		STA left_racket_tile, X
-		STA left_racket_tile, Y
-		
-		LDA #0; flags
-		STA left_racket_attribute
-		STA left_racket_attribute, X
-		STA left_racket_attribute, Y
-		
+		STA player_attribute
+		STA player_attribute, X
+		STA player_attribute, Y
+	
 	; PLAYER 1 AND 2 SCORES	
 		;LDX #4 ; offset for high digit
 		
 		LDA #32 ; y pos
 		STA p1_score_y			; p1 low digit
-		STA p2_score_y			; p2 low digit
 		STA p1_score_y, X		; p1 high digit
-		STA p2_score_y, X		; p2 high digit
 		
 		LDA #$10 ; tile number
 		STA p1_score_tile			; p1 low digit
-		STA p2_score_tile			; p2 low digit
 		STA p1_score_tile, X		; p1 high digit
-		STA p2_score_tile, X		; p2 high digit
 		
 		LDA #0 ; attribute byte
 		STA p1_score_attribute			; p1 low digit
-		STA p2_score_attribute			; p2 low digit
 		STA p1_score_attribute, X		; p1 high digit
-		STA p2_score_attribute, X		; p2 high digit
 		
 		; x pos player 1
 		LDA #32 
@@ -107,12 +84,6 @@
 		LDA #40
 		STA p1_score_x			; p1 low digit
 		
-		; x pos player 2
-		LDA #200
-		STA p2_score_x, X		; p2 high digit
-		LDA #208
-		STA p2_score_x			; p1 low digit
-
 	
 ; -[INIT PPU (ENABLES RENDERING)]-
 	LDA #%10010000 ; V-Blank interrupt ON, Sprite size = 8x8, Nametable 0

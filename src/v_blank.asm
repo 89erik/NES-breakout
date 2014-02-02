@@ -3,10 +3,10 @@
 		LDA PPU_STATUS	; Clear adress part latch
 			
 		; -[PERFORM SCROLL]-
-		LDA x_scroll
-		STA PPU_SCROLL
-		LDA y_scroll
-		STA PPU_SCROLL
+		;LDA x_scroll
+		;STA PPU_SCROLL
+		;LDA y_scroll
+		;STA PPU_SCROLL
 		
 		; -[UPDATE PPU CONTROL REGISTERS]-
 		LDA ppu_ctrl_1
@@ -23,3 +23,4 @@
 		
 		PLA	; Pull A from stack
 		RTI ; ReTurn from Interrupt
+		

@@ -8,7 +8,7 @@
 .segment "VECTORS"
 	.word V_blank	; Non-maskable interrupt (used by V-Blank)
 	.word Start		; Initial program counter value
-	.word No-op		; IRQ (not used)
+	.word No_op		; IRQ (not used)
 
 .segment "GFX"
 	.incbin "data/sprites.chr"		; Graphics for moving things (binary file)
@@ -21,7 +21,7 @@
 		.include "loop/loop.asm"		; Physics to be performed per framerate
 	V_blank:
 		.include "v_blank.asm"			; Drawing the screen
-	No-op:
+	No_op:
 		RTI
 	
 .segment "DATA"	
@@ -32,4 +32,5 @@
 	
 .segment "OAM"
 	.include "memory/oam.asm"				; Sprite memory
+	
 	
