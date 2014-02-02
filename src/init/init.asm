@@ -31,7 +31,7 @@
 		BNE @load_palette
 
 ; -[FILL BACKGROUND]-
-	.include "init/fill_background.asm"
+	.include "src/init/fill_background.asm"
 
 
 ; -[INIT STACK]-
@@ -41,6 +41,10 @@
 ; -[INIT STATE VARIABLES]-
 	LDA #0
 	STA bg_color
+	LDA #3
+	STA x_vector
+	LDA #-3
+	STA y_vector
 
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
 	; BALL
@@ -48,6 +52,9 @@
 		STA ball_tile
 		LDA #%00000001; (Palette 1)
 		STA ball_attribute
+		LDA # 100
+		STA ball_x
+		STA ball_y
 		
 	; PLAYER RACKET
 		LDX #4 ; first offset

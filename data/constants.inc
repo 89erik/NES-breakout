@@ -20,6 +20,8 @@ MIN_Y_VECTOR		= $05
 
 RIGHT_WALL			= 250
 LEFT_WALL			= 5
+FLOOR				= 232
+ROOF				= 0
 
 ; ---[ GRAPHIC CONSTANTS ]---
 BG_COLOR			= $11

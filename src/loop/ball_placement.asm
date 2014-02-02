@@ -30,12 +30,7 @@
 			JMP @wall_hit
 
 		
-	; -[CHECK IF BALL WAS CAUGHT BY A RACKET]-
 	@wall_hit: 
-		JSR CheckHitFlipper
-		LDA delta_racket_hit
-		CMP #$FF
-		BEQ FlipperNoHit ; NO HIT (breaks loop)
 
 	; -[RACKET HIT]-
 		
@@ -53,8 +48,16 @@
 		STA panic_mode ; Enable panic mode
 	@end_of_panic_check:
 		
+	; INVERT X-VECTOR
+	LDA #0
+	SEC
+	SBC x_vector
+	STA x_vector
+	JMP @end_of_task ; JMP to TestEdgeY?
 		
 		
+; THIS IS SOME WIERD STUFF. SKIP EVERYTHING. REMOVE LATER UNLESS NEEDED.
+JMP @end_of_wierd_stuff
 	; -[UPDATE Y-VECTOR]-
 		;LDA delta_racket_hit_positive
 		;CMP #1
@@ -87,26 +90,33 @@
 		SBC x_vector
 		STA x_vector
 		JMP TestEdgeY
-; -------------------------------
+@end_of_wierd_stuff:
 		
 		
 	
 	
 	; -[HIT ROOF OR FLOOR?]-
 TestEdgeY:
-	CPY #232
-	BCS @roof_floor_hit ; y >= 232
-	CPY #0
-	BEQ @roof_floor_hit
-	
+	CPY #FLOOR
+	BCS @floor_hit ; y >= 232
+	CPY #ROOF
+	BEQ @roof_hit
 	JMP @end_of_task ; No hit
 	
-	
-	; ---[ROOF/FLOOR HIT]---
-@roof_floor_hit:
+@roof_hit:
 	LDA #0
 	SEC
 	SBC y_vector
 	STA y_vector
+	JMP @end_of_task
+
+@floor_hit:
+	JSR CheckHitFlipper
+	LDA delta_racket_hit
+	CMP #$FF
+	BEQ FlipperNoHit ; NO HIT (breaks loop)
+
+
+
 	
 @end_of_task:

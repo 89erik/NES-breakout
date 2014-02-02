@@ -15,12 +15,12 @@
 	.incbin "data/background.chr"	; Graphics for background (binary file)
 	
 .segment "CODE"
-		.include "sub_routines.asm"		; General sub-routines
+		.include "src/sub_routines.asm"		; General sub-routines
 	Start:
-		.include "init/init.asm" 		; Initialization procedure
-		.include "loop/loop.asm"		; Physics to be performed per framerate
+		.include "src/init/init.asm" 		; Initialization procedure
+		.include "src/loop/loop.asm"		; Physics to be performed per framerate
 	V_blank:
-		.include "v_blank.asm"			; Drawing the screen
+		.include "src/v_blank.asm"			; Drawing the screen
 	No_op:
 		RTI
 	
@@ -32,5 +32,4 @@
 	
 .segment "OAM"
 	.include "memory/oam.asm"				; Sprite memory
-	
 	

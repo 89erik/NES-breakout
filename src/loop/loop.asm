@@ -19,10 +19,10 @@ MainLoop:
 
 	
 	; Loop procedures
-	.include "loop/racket_placement.asm"		; Places the rackets
-	.include "loop/ball_placement.asm"		    ; Places the ball
+	.include "src/loop/racket_placement.asm"		; Places the rackets
+	.include "src/loop/ball_placement.asm"		    ; Places the ball
 	JMP MainLoop
 
 	; Subroutines
-	.include "loop/flipper_miss.asm"			; Subroutine used by "ball_placement.asm"
-	.include "loop/check_hit_flipper.asm"		; Subroutine used by "ball_placement.asm"
+	.include "src/loop/flipper_miss.asm"			; Subroutine used by "ball_placement.asm"
+	.include "src/loop/check_hit_flipper.asm"		; Subroutine used by "ball_placement.asm"
