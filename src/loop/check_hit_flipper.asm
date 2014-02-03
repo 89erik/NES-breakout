@@ -1,31 +1,39 @@
 ; ------ [ FUNCTION CHECK HIT FLIPPER ] ------
-; Returns offset in delta_racket_hit
+; Places offset in delta_racket_hit
 ; $FF means no hit
-; On call, Y should contain data for which 
-; racket should be checked for.
-; Y = -1 means left racket
-; Y = 1 means right racket
+
 CheckHitFlipper:
+
+		LDA racket_pos
+		CLC
+		ADC #RACKET_WIDTH/2
+		STA tmp
+		
+		LDA ball_x
+		CLC
+		SBC tmp
+		STA delta_racket_hit
+		
+		JMP @end_of_sub_routine
+
+
+
+
+
+
 		LDA racket_pos
 		STA <racket			; TODO: why is this a separate variable?
-		
 
-		; -[SET UPPER LIMIT]-
+		; -[SET LEFT LIMIT]-
 		LDA racket
-		SEC
-		SBC #4
-		CMP #233
-		BCC @top_limit_set
-		LDA #0
-	@top_limit_set:
 		TAX
 		; -[SET LOWER LIMIT]-
 		LDA racket
 		CLC
-		ADC #28
-		CMP #233
+		ADC #RACKET_WIDTH
+		CMP #RIGHT_WALL
 		BCC @low_limit_set
-		LDA #232 ; if (a>232)
+		LDA #RIGHT_WALL
 	@low_limit_set:
 		TAY
 		

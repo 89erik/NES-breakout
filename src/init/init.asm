@@ -32,23 +32,32 @@
 
 ; -[FILL BACKGROUND]-
 	.include "src/init/fill_background.asm"
-
-
+	
 ; -[INIT STACK]-
 	LDX #$FF
 	TXS
 
+;--------------------------------------------------------
+JMP @done
+	LDA #100/2
+	CMP #50
+	BEQ @done
+	@derp: JMP @derp
+	
+@done:
+;--------------------------------------------------------
+
 ; -[INIT STATE VARIABLES]-
 	LDA #0
 	STA bg_color
-	LDA #3
+	LDA #1
 	STA x_vector
-	LDA #-3
+	LDA #-1
 	STA y_vector
 
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
 	; BALL
-		LDA #2
+		LDA #BALL_TILE
 		STA ball_tile
 		LDA #%00000001; (Palette 1)
 		STA ball_attribute
@@ -60,7 +69,7 @@
 		LDX #4 ; first offset
 		LDY #8 ; second offset
 	
-		LDA #1 ; tile
+		LDA #RACKET_TILE
 		STA player_tile
 		STA player_tile, X
 		STA player_tile, Y

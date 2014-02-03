@@ -24,7 +24,7 @@ RacketPlacement:	; previous "RightRacket"
 	
 
 	; -[Y-COORDINATE]-
-	LDA #250
+	LDA #RACKET_Y
 	STA player_y, Y
 	
 	INX
@@ -65,10 +65,10 @@ RacketPlacement:	; previous "RightRacket"
 		LDA racket_pos
 		SEC
 		SBC #4
-		CMP #214 ; 232 - 18
-		BCC @up_not_OOR ; A < 232
-		LDA #0
-	@up_not_OOR:
+		CMP #RIGHT_WALL+1
+		BCC @left_move_in_bounds ; A < RIGHT == A >= 0
+		LDA #LEFT_WALL
+	@left_move_in_bounds:
 		STA racket_pos
 
 		JMP @end_of_task
@@ -81,10 +81,10 @@ RacketPlacement:	; previous "RightRacket"
 		LDA racket_pos
 		CLC
 		ADC #4
-		CMP #214 ; 232 - 18
-		BCC @down_not_OOR ; A < 232
-		LDA #214 ; 232 - 18
-	@down_not_OOR:
+		CMP #RIGHT_WALL-18
+		BCC @right_move_in_bounds ; A < 232
+		LDA #RIGHT_WALL-18 ; 232 - 18
+	@right_move_in_bounds:
 		STA racket_pos
 		
 	@end_of_task:

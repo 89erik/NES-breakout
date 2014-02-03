@@ -30,4 +30,5 @@
 	; Registers
 	ppu_ctrl_1:					.byte 0
 
-	
+	tmp:						.byte 0
+	sub_routine_tmp:			.byte 0
