@@ -72,6 +72,7 @@ TestEdgeY:
 @past_racket:
 	CMP #FLOOR+SPRITE_SIZE
 	BCS FlipperNoHit ; NO HIT (breaks loop)
+	JMP @end_of_task
 	
 @invert_y_vector:
 	LDA #0
