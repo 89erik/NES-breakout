@@ -14,7 +14,6 @@
 	; Player state
 	racket_pos:					.byte 0	; Position of racket
 	racket:						.byte 0 ; (used in check_hit_flipper.asm)
-	delta_racket_hit:			.byte 0 ; Where on racket ball hit
 	p1_score:					.byte 0
 	
 	; The ball

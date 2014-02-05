@@ -1,86 +1,37 @@
-; ------ [ FUNCTION CHECK HIT FLIPPER ] ------
-; Places offset in delta_racket_hit
-; $FF means no hit
-
+; A <- diff(ball, racket)
 CheckHitFlipper:
-
+		; Position of racket
 		LDA racket_pos
 		CLC
 		ADC #RACKET_WIDTH/2
 		STA tmp
 		
+		; Position of ball
 		LDA ball_x
 		CLC
-		SBC tmp
-		STA delta_racket_hit
+		ADC #SPRITE_SIZE/2
 		
-		JMP @end_of_sub_routine
-
-
-
-
-
-
-		LDA racket_pos
-		STA <racket			; TODO: why is this a separate variable?
-
-		; -[SET LEFT LIMIT]-
-		LDA racket
-		TAX
-		; -[SET LOWER LIMIT]-
-		LDA racket
-		CLC
-		ADC #RACKET_WIDTH
-		CMP #RIGHT_WALL
-		BCC @low_limit_set
-		LDA #RIGHT_WALL
-	@low_limit_set:
-		TAY
-		
-	; -[TEST UPPER LIMIT]-
-		CPX ball_y
-		BCS @no_hit ; if (X >= pos), (pos < X)
-		
-	; -[TEST LOWER LIMIT]-
-		CPY ball_y
-		BEQ @racket_hit
-		BCC @no_hit ; if (Y <= pos), (pos > Y)
-		
-	; -[HIT]-
-	@racket_hit:
-		;set scroll
-		;LDA scroll_direction
-		;EOR #$FF
-		;STA scroll_direction
-	
-		LDA ball_y
+		; Find diff(racket, ball)
+		TAX					; X <- ball
 		SEC
-		SBC racket
-		CMP #8
-		BCC @high_hit ; ballpos < sweet_spot
-		CMP #17
-		BCS @low_hit ; ballpos > sweet_spot
-	
-	;RacketHitSweetSpot
-		LDA #0
-		JMP @hit_check_complete
-	@high_hit:
-		LDA #1
-		;STA delta_racket_hit_positive
-		JMP @hit_check_complete
-	@low_hit:
-		LDA #0
-		;STA delta_racket_hit_positive
-		LDA #1
-		;JMP @hit_check_complete
+		SBC tmp				; A <- diff(ball, racket)
 		
-	@hit_check_complete:	
-		STA delta_racket_hit
-		JMP @end_of_sub_routine
 		
-	@no_hit:
-		LDA #$FF
-		STA delta_racket_hit
-
-	@end_of_sub_routine:
-		RTS ; return
+		; Is ball to the right of racket?
+		; If so, a negative diff means overflow
+		CPX tmp				 ; cmp(ball, racket)
+		BCC @racket_is_right ; ball < racket
+		@racket_is_left:	 ; negative is not OK
+			;@loop: JMP @loop
+			STA tmp			 ; tmp <- diff
+			JSR SignedIsNegative
+			BEQ @large_diff  ; negative diff AND (racket < ball) -> overflow -> large diff
+			LDA tmp			 ; A <- diff
+		
+		@racket_is_right:
+		RTS
+				
+		@large_diff:
+			LDA #HIGHEST_SIGNED
+			RTS
+			

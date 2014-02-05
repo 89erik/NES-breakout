@@ -27,60 +27,6 @@
 			SBC x_vector
 			STA x_vector ; Inverts x_vector
 			JMP @end_of_task ; JMP to TestEdgeY?
-		
-	; -[CHECK AND SET PANIC MODE]-
-;		LDA panic_mode
-;		CMP #1
-;		BEQ @end_of_panic_check
-;		
-;		;LDX hit_count
-;		;INX
-;		;STX hit_count
-;		CPX #5
-;		JMP @end_of_panic_check ;BCC @end_of_panic_check ; X<5					;PANIC MODE DISABLED
-;		LDA #1
-;		STA panic_mode ; Enable panic mode
-;	@end_of_panic_check:
-		
-		
-		
-; THIS IS SOME WIERD STUFF. SKIP EVERYTHING. REMOVE LATER UNLESS NEEDED.
-JMP @end_of_wierd_stuff
-	; -[UPDATE Y-VECTOR]-
-		;LDA delta_racket_hit_positive
-		;CMP #1
-		;BEQ @negative_vector
-		
-	;@positive_vector
-		LDA y_vector
-		CLC
-		ADC delta_racket_hit
-		
-		;CMP #10 				; KONSTANT.MAX_Y_VECTOR
-		;BCC @size_ok
-		;LDA #10					; KONSTANT.MAX_Y_VECTOR
-		;JMP @size_ok
-		
-	@negative_vector:
-		LDA y_vector
-		SEC
-		SBC delta_racket_hit
-		;CMP #-10				; KONSTANT.MIN_Y_VECTOR
-		;BCS @size_ok
-		;LDA #-10				; KONSTANT.MIN_Y_VECTOR
-		JMP @size_ok
-
-	@size_ok:
-		STA y_vector
-		
-		LDA #0
-		SEC
-		SBC x_vector
-		STA x_vector
-		JMP TestEdgeY
-@end_of_wierd_stuff:
-		
-		
 	
 	
 	; -[HIT ROOF OR FLOOR?]-
@@ -91,8 +37,8 @@ TestEdgeY:
 
 	@ball_moves_downward:
 		LDA ball_y
-		CMP #RACKET_Y
-		BCS @floor_hit ; greater or equal
+		CMP #RACKET_Y-SPRITE_SIZE
+		BCS @racket_hit ; greater or equal
 		JMP @end_of_task ; No hit
 	
 	@ball_moves_upward:
@@ -103,19 +49,29 @@ TestEdgeY:
 		BCS @invert_y_vector
 		JMP @end_of_task ; No hit
 	
-@floor_hit:
-	JSR CheckHitFlipper
-	LDA delta_racket_hit
-	JSR AbsoluteValue
-	CMP #(RACKET_WIDTH/2)+1
-	BCS FlipperNoHit ; NO HIT (breaks loop)
-	LDA delta_racket_hit
-	JSR ASR
+@racket_hit:
+	CMP #RACKET_Y-SPRITE_SIZE + 1 + RACKET_MISS_TOLERANCE_Y
+	BCS @past_racket
+	
+	JSR CheckHitFlipper ; A <- diff(ball, racket)
+	STA tmp				; Pushes diff(ball, racket)
+	JSR AbsoluteValue	; A <- abs(diff)
+	CMP #(RACKET_WIDTH/2)+1+RACKET_MISS_TOLERANCE_X ; Hit?
+	BCS @end_of_task	; No hit (ignores for now)
+	LDA tmp				; Pulls diff(ball, racket)
+	JSR ASR				; Reduce diff
+	JSR ASR				; Reduce diff
+	JSR ASR				; Reduce diff
 	
 	CLC
 	ADC x_vector
 	STA x_vector
-	;JMP @invert_y_vector
+	JMP @invert_y_vector
+
+; Ball is below racket limit, reached bottom yet?
+@past_racket:
+	CMP #FLOOR+SPRITE_SIZE
+	BCS FlipperNoHit ; NO HIT (breaks loop)
 	
 @invert_y_vector:
 	LDA #0
@@ -124,4 +80,5 @@ TestEdgeY:
 	STA y_vector
 	JMP @end_of_task
 
+	
 @end_of_task:

@@ -14,11 +14,11 @@ RacketPlacement:	; previous "RightRacket"
 	
 	@add_one:
 		CLC
-		ADC #8
+		ADC #SPRITE_SIZE
 		JMP @finished_adding
 	@add_two:
 		CLC
-		ADC #16
+		ADC #SPRITE_SIZE*2
 	@finished_adding:
 	STA player_x, Y
 	

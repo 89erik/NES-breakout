@@ -46,11 +46,13 @@ SignedIsNegative:
 AbsoluteValue:
 	STA sub_routine_tmp
 	JSR SignedIsNegative
-	BNE @end_of_sub_routine
+	BNE @not_negative
 		LDA #0
 		CLC
 		SBC sub_routine_tmp
-	@end_of_sub_routine:
+		RTS
+	@not_negative:
+		LDA sub_routine_tmp
 		RTS
 	
 ; A <- A/2	
