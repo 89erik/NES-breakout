@@ -73,14 +73,6 @@ WaitForUser:
 		; -[DISABLE PANIC MODE]-
 		LDA #0
 		STA panic_mode 
-	
-		; -[SET BG COLOR]-
-		LDA #$3F
-		STA PPU_ADRESS
-		LDA #$00
-		STA PPU_ADRESS
-		LDA #BG_COLOR
-		STA PPU_VALUE
 		
 		; -[RE-INITIALIZE GAME]
 		

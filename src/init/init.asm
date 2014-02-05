@@ -33,14 +33,19 @@
 ; -[FILL BACKGROUND]-
 	.include "src/init/fill_background.asm"
 	
+; -[SET SCROLL]-
+	LDA #0
+	STA PPU_SCROLL
+	STA PPU_SCROLL
+	
 ; -[INIT STACK]-
 	LDX #$FF
 	TXS
 
 ;--------------------------------------------------------
 JMP @done
-	LDA #100/2
-	CMP #50
+	LDA #LOWEST_SIGNED-1
+	JSR SignedIsNegative
 	BEQ @done
 	@derp: JMP @derp
 	
@@ -52,9 +57,10 @@ JMP @done
 	STA bg_color
 	LDA #1
 	STA x_vector
-	LDA #-1
+	LDA #1
 	STA y_vector
 
+	
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
 	; BALL
 		LDA #BALL_TILE

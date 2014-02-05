@@ -4,23 +4,37 @@ FillNametable1:
 		LDA #0
 		STA PPU_ADRESS
 
-		LDX #30		;remaining rows
+		LDY #0
+		@row:
+			LDX #0			
+			@column:
+				CPX #0
+				BEQ @wall
+				CPX #TILES_X-1
+				BEQ @wall
+				CPY #0
+				BEQ @wall
+				
+				
+				@default:
+					LDA #BLANK_TILE
+					JMP @done
+				@wall:
+					LDA #WALL_TILE
+					JMP @done
+				@wall2:
 
-	@save_row:
-		LDY #16
+			@done:
+				STA PPU_VALUE
 		
-	@save_tiles:
-		LDA #$20
-		STA PPU_VALUE
-		LDA #$21
-		STA PPU_VALUE
-		DEY
-		BNE @save_tiles
-		DEX
-		BNE @save_row
-
+				INX
+				CPX #TILES_X
+				BCC @column		; Next column
+				INY
+				CPY #TILES_Y
+				BCC @row		; Next row
+				
 		
-
 FillNametable2:
 		LDA #$24
 		STA PPU_ADRESS
