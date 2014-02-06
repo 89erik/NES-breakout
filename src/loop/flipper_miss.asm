@@ -8,13 +8,13 @@ FlipperNoHit:
 		TXA
 		CMP #10
 		BCS @p1_two_digits
-		;@p1_one_digit
+		@p1_one_digit:
 			CLC
 			ADC #$10
 			STA p1_score_tile
 			JMP WaitForUser
 		@p1_two_digits:
-			JSR SplitDigits
+			JSR @split_digits
 			
 			CLC
 			ADC #$10
@@ -23,7 +23,7 @@ FlipperNoHit:
 			TXA
 			CLC
 			ADC #$10
-			LDY #4 ;offset for high digit			
+			LDY #4 				 ;offset for high digit			
 			STA p1_score_tile, Y ; high digit
 			
 			JMP WaitForUser
@@ -33,7 +33,7 @@ FlipperNoHit:
 	; Input: 	A = two-digit input
 	; Output: 	X = high digit
 	;			A = low digit
-	SplitDigits:
+	@split_digits:
 		LDX #0
 		@check_again:
 			INX	
@@ -53,20 +53,14 @@ WaitForUser:
 		LDA #1
 		STA panic_mode
 		LDA #1
-		STA PLAYER1
-		STA PLAYER2
+		STA PLAYER1_CTRL
 		LDA #0
-		STA PLAYER1
-		STA PLAYER2
+		STA PLAYER1_CTRL
 		
-		LDA PLAYER1 ; A
+		LDA PLAYER1_CTRL ; A
 		AND #1
 		BNE @end_of_wait
-		
-		LDA PLAYER2 ; A
-		AND #1
-		BNE @end_of_wait
-		
+
 		JMP WaitForUser
 	@end_of_wait:
 		
@@ -102,5 +96,3 @@ WaitForUser:
 			STA y_vector
 		JMP MainLoop
 ; ----------------------------------------
-	
-	; La det stå "Player X is victorious!!" elns når player X vinner

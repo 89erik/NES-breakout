@@ -2,10 +2,9 @@
 ; Writes the racket placement to OAM
 	LDX #0 ; offset
 	LDY #0 ; offset x4
-RacketPlacement:	; previous "RightRacket"
+RacketPlacement:
 	; -[X-COORDINATE]-
 	LDA racket_pos
-	
 	CPX #1
 	BEQ @add_one
 	CPX #2
@@ -22,7 +21,6 @@ RacketPlacement:	; previous "RightRacket"
 	@finished_adding:
 	STA player_x, Y
 	
-
 	; -[Y-COORDINATE]-
 	LDA #RACKET_Y
 	STA player_y, Y
@@ -35,33 +33,32 @@ RacketPlacement:	; previous "RightRacket"
 	
 	CPX #3
 	BNE RacketPlacement
-	
 
 	
 		
-; ---[RIGHT RACKET INPUT ]---
+; ---[ RACKET INPUT ]---
 ; Updates racket position according to input from player
 
-;RightRacketInput:
-		; Signal controller to be read
+@racket_input:
+		; Signal controller for read
 		LDA #1
-		STA PLAYER1
+		STA PLAYER1_CTRL
 		LDA #0
-		STA PLAYER1
+		STA PLAYER1_CTRL
 		
 		; Read controller, sequence is as follows:
 		; A, B, Select, Start, Up, Down, Left, Right
-		LDA PLAYER1 ; A
-		LDA PLAYER1 ; B
-		LDA PLAYER1 ; Select
-		LDA PLAYER1 ; Start
-		LDA PLAYER1 ; Up
-		LDA PLAYER1 ; Down
+		LDA PLAYER1_CTRL ; A
+		LDA PLAYER1_CTRL ; B
+		LDA PLAYER1_CTRL ; Select
+		LDA PLAYER1_CTRL ; Start
+		LDA PLAYER1_CTRL ; Up
+		LDA PLAYER1_CTRL ; Down
 		
 	; -[CHECK LEFT BUTTON]-
-		LDA PLAYER1 ; Up
-		CMP #$41
-		BNE @right_button
+		LDA PLAYER1_CTRL ; Left
+		AND #1
+		BEQ @right_button
 		LDA racket_pos
 		SEC
 		SBC #4
@@ -75,15 +72,15 @@ RacketPlacement:	; previous "RightRacket"
 	
 	; -[CHECK RIGHT BUTTON]-
 	@right_button:
-		LDA PLAYER1 ; Down
-		CMP #$41
-		BNE @end_of_task
+		LDA PLAYER1_CTRL ; Right
+		AND #1
+		BEQ @end_of_task
 		LDA racket_pos
 		CLC
 		ADC #4
-		CMP #RIGHT_WALL-18
-		BCC @right_move_in_bounds ; A < 232
-		LDA #RIGHT_WALL-18 ; 232 - 18
+		CMP #RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
+		BCC @right_move_in_bounds
+		LDA #RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
 	@right_move_in_bounds:
 		STA racket_pos
 		

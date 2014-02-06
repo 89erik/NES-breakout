@@ -5,30 +5,6 @@
 ; used at several parts of the system				;
 ; ------------------------------------------------- ;
 
-
-LoadLevel:
-	; TODO
-	RTS
-	
-	
-	
-; Compares two numbers 'x' and 'y', passed by stack,
-; where 'x' is pushed before 'y'.
-;SignedComparison:
-;	PLA						; Pull second argument
-;	JSR SignedIsNegative
-;	TAY						; Y <- negative(A)
-	
-;	PLA						; Pull first argument
-;	JSR SignedIsNegative
-;	TAX						; X <- negative(A)
-		
-;	CPX #0
-;	BEQ @x_negative	
-
-;	@x_negative:
-;	RTS
-	
 ; Is A negative?
 ; Yes: A <- 0
 ; No:  A <- 1
@@ -84,7 +60,3 @@ ASR:
 		PLA
 		LSR A
 		RTS
-
-
-
-

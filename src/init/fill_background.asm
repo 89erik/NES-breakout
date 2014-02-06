@@ -14,8 +14,7 @@ FillNametable1:
 				BEQ @wall
 				CPY #0
 				BEQ @wall
-				
-				
+								
 				@default:
 					LDA #BLANK_TILE
 					JMP @done
