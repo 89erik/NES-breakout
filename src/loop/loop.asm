@@ -1,28 +1,28 @@
 ; ----------------------------------------------- ;
 ; -----------------[ MAIN LOOP ]----------------- ;
 ; ----------------------------------------------- ;
-; This part of the code runs once after every	  ;
+; This part of the code runs once after every     ;
 ; V-blank and performs the physics of moving the  ;
-; racket according to input, and the ball	      ;
+; racket according to input, and the ball         ;
 ; according to its vectors. This loops repeats    ;
-; with the excact same frequency as the PPU	      ;
-; framerate.									  ;
+; with the excact same frequency as the PPU       ;
+; framerate.                                      ;
 ; ----------------------------------------------- ;
 
 
 MainLoop:
-	LDA wait_for_v_blank
-	BEQ MainLoop
-	
-	LDA #0
-	STA wait_for_v_blank
+    LDA wait_for_v_blank
+    BEQ MainLoop
+    
+    LDA #0
+    STA wait_for_v_blank
 
-	
-	; Loop procedures
-	.include "src/loop/racket_placement.asm"		; Places the rackets
-	.include "src/loop/ball_placement.asm"		    ; Places the ball
-	JMP MainLoop
+    
+    ; Loop procedures
+    .include "src/loop/racket_placement.asm"        ; Places the rackets
+    .include "src/loop/ball_placement.asm"          ; Places the ball
+    JMP MainLoop
 
-	; Subroutines
-	.include "src/loop/flipper_miss.asm"			; Subroutine used by "ball_placement.asm"
-	.include "src/loop/check_hit_flipper.asm"		; Subroutine used by "ball_placement.asm"
+    ; Subroutines
+    .include "src/loop/flipper_miss.asm"            ; Subroutine used by "ball_placement.asm"
+    .include "src/loop/check_hit_flipper.asm"       ; Subroutine used by "ball_placement.asm"
