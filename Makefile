@@ -4,7 +4,7 @@
 # Definitions                                                      #
 ####################################################################
 SHELL = C:/Windows/System32/cmd.exe
-PROJECTNAME = $(notdir $(CURDIR))
+PROJECTNAME = breakout
 
 CC       = ca65.exe
 LD       = ld65.exe
