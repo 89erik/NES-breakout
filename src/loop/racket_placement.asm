@@ -37,6 +37,17 @@ RacketPlacement:
 		; Read controller, sequence is as follows:
 		; A, B, Select, Start, Up, Down, Left, Right
 		LDA PLAYER1_CTRL ; A
+		
+		LDX holding_ball
+		BNE @ignore_A_button
+			AND #1
+			BEQ @ignore_A_button ; not pushed
+				LDA #FALSE
+				STA holding_ball
+				LDA #-BALL_SPEED_Y
+				STA y_vector
+		
+		@ignore_A_button:
 		LDA PLAYER1_CTRL ; B
 		LDA PLAYER1_CTRL ; Select
 		LDA PLAYER1_CTRL ; Start

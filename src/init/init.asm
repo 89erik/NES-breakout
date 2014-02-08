@@ -45,10 +45,9 @@
 ;--------------------------------------------------------
 ; Test area
 JMP @done
+	LDA #1
 	LDX #0
-	LDA #20
-	CPX #10
-	BCC @done
+	BEQ @done
 	@derp: JMP @derp
 	
 @done:
@@ -59,15 +58,14 @@ JMP @done
 	STA bg_color
 	LDA #0
 	STA x_vector
-	LDA #1
+	LDA #BALL_SPEED_Y
 	STA y_vector
 	LDA #RACKET_START_WIDTH
 	STA racket_width
-	LDA #RIGHT_WALL/2
-	STA ball_x
+	LDA #(RIGHT_WALL/2) - (RACKET_START_WIDTH/2)
 	STA racket_pos
-	LDA #FLOOR/3
-	STA ball_y
+	LDA #TRUE
+	STA holding_ball
 
 	
 ; -[INIT GAME-INDEPENDENT OAM DATA]-

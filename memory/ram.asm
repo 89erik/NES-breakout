@@ -15,6 +15,7 @@
 	racket_pos:					.byte 0
 	racket_width:				.byte 0
 	p1_score:					.byte 0
+	holding_ball:				.byte 0
 	
 	; The ball
 	x_vector: 					.byte 0

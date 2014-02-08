@@ -12,7 +12,7 @@ FlipperNoHit:
 			CLC
 			ADC #$10
 			STA p1_score_tile
-			JMP WaitForUser
+			JMP @flipper_missed
 		@p1_two_digits:
 			JSR @split_digits
 			
@@ -26,7 +26,7 @@ FlipperNoHit:
 			LDY #4 				 ;offset for high digit			
 			STA p1_score_tile, Y ; high digit
 			
-			JMP WaitForUser
+			JMP @flipper_missed
 		
 
 		
@@ -42,57 +42,8 @@ FlipperNoHit:
 			CMP #10
 			BCS @check_again
 		RTS		
-	
-	
 
-; ----------------------------------------
-
-
-; ---[ WAITS FOR THE USER TO PUSH 'A' ]---
-WaitForUser:
-		LDA #1
-		STA panic_mode
-		LDA #1
-		STA PLAYER1_CTRL
-		LDA #0
-		STA PLAYER1_CTRL
-		
-		LDA PLAYER1_CTRL ; A
-		AND #1
-		BNE @end_of_wait
-
-		JMP WaitForUser
-	@end_of_wait:
-		
-		; -[DISABLE PANIC MODE]-
-		LDA #0
-		STA panic_mode 
-		
-		; -[RE-INITIALIZE GAME]
-		
-			; -[INIT BALL POSITION]-
-			LDA #50
-			STA ball_x
-			LDA racket_pos
-			STA ball_y
-		
-			; -[INIT BALL X VECTOR]-
-			LDA #2
-			STA x_vector
-			
-			JMP @init_y_vector
-
-		@init_y_vector:	
-			LDA ball_y
-			CMP #116
-			BCS @ball_rise
-			
-			@ball_fall:
-				LDA #1
-				JMP :+
-			@ball_rise:
-				LDA #-1
-			:	
-			STA y_vector
-		JMP MainLoop
-; ----------------------------------------
+	@flipper_missed:
+		LDA #TRUE
+		STA holding_ball
+		RTS

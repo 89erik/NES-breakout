@@ -1,4 +1,27 @@
 BallPlacement:
+	LDA holding_ball
+	BNE @move_ball
+	@hold_ball:
+		; STOP BALL MOVEMENT
+		LDA #0
+		STA x_vector
+		STA y_vector
+		
+		; SET BALL X POSITION AFTER RACKET
+		JSR RacketWidth		; A <- len(racket_width)
+		LSR					; A <- len(racket_width)/2
+		CLC
+		ADC racket_pos
+		SEC
+		SBC #SPRITE_SIZE/2
+		STA ball_x
+		
+		; SET BALL Y POSITION
+		LDA #RACKET_Y - SPRITE_SIZE
+		STA ball_y
+		
+		JMP @end_of_task
+
 	@move_ball:
 		; -[UPDATE X]-
 		LDA ball_x		; Load x position
@@ -86,7 +109,8 @@ BallPlacement:
 		@past_racket:
 			; Ball is below racket limit, reached floor yet?
 			CMP #FLOOR+SPRITE_SIZE
-			BCS FlipperNoHit ; Floor and no hit! (breaks main loop)
+			BCC @end_of_task ; Hit
+			JSR FlipperNoHit ; No hit
 			JMP @end_of_task
 			
 		@invert_y_vector:
