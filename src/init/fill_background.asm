@@ -70,10 +70,12 @@ FillNametable1:
                 RTS
             
             @found_match:
-                PHA
-                LDA brick_tile, Y ; Loads tile
+                PHA                 ; Y -> stack
+                LDA brick_tile, Y   ; Loads tile
+                STA tmp             ; tile -> tmp
                 PLA
-                TAY         ; Puts screen Y back into its register
+                TAY                 ; Puts screen Y back into its register
+                LDA tmp             ; A <- tile
                 
                 RTS
 
