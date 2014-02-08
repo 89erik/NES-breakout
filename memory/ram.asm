@@ -13,6 +13,7 @@
 	
 	; Player state
 	racket_pos:					.byte 0
+	racket_width:				.byte 0
 	p1_score:					.byte 0
 	
 	; The ball

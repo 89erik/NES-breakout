@@ -1,10 +1,11 @@
 ; A <- diff(ball, racket)
 CheckHitFlipper:
-		; Position of racket
-		LDA racket_pos
-		CLC
-		ADC #RACKET_WIDTH/2
-		STA tmp
+		; Center position of racket
+		JSR RacketWidth		; A <- len(racket_width)
+		LSR 				; A <- len(racket_width)/2
+		CLC 
+		ADC racket_pos		; A <- racket_pos + len(racket_width)/2
+		STA tmp				; tmp <- A == center of racket
 		
 		; Position of ball
 		LDA ball_x

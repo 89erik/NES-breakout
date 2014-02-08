@@ -16,7 +16,7 @@ FillNametable1:
 				BEQ @wall
 								
 				@default:
-					LDA #BLANK_TILE
+					LDA #BLANK_BG_TILE
 					JMP @done
 				@wall:
 					LDA #WALL_TILE

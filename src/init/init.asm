@@ -43,10 +43,12 @@
 	TXS
 
 ;--------------------------------------------------------
+; Test area
 JMP @done
-	LDA #LOWEST_SIGNED-1
-	JSR SignedIsNegative
-	BEQ @done
+	LDX #0
+	LDA #20
+	CPX #10
+	BCC @done
 	@derp: JMP @derp
 	
 @done:
@@ -55,10 +57,17 @@ JMP @done
 ; -[INIT STATE VARIABLES]-
 	LDA #0
 	STA bg_color
-	LDA #1
+	LDA #0
 	STA x_vector
 	LDA #1
 	STA y_vector
+	LDA #RACKET_START_WIDTH
+	STA racket_width
+	LDA #RIGHT_WALL/2
+	STA ball_x
+	STA racket_pos
+	LDA #FLOOR/3
+	STA ball_y
 
 	
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
@@ -67,26 +76,56 @@ JMP @done
 		STA ball_tile
 		LDA #%00000001; (Palette 1)
 		STA ball_attribute
-		LDA # 100
-		STA ball_x
-		STA ball_y
 		
 	; PLAYER RACKET
-		LDX #4 ; first offset
-		LDY #8 ; second offset
-	
-		LDA #RACKET_TILE
-		STA player_tile
-		STA player_tile, X
-		STA player_tile, Y
+		LDX #0 ; offset
+		LDY #0 ; offset x4
+		@left_edge_of_racket:
+			LDA #RACKET_LEFT_TILE
+			STA player_tile, Y
+			LDA #RACKET_ATTRIBUTE
+			STA player_attribute, Y
+			JSR IncrementOffset
+
+		CPX #RACKET_START_WIDTH-1
+		BCS @right_edge_of_racket
 		
-		LDA #0; flags
-		STA player_attribute
-		STA player_attribute, X
-		STA player_attribute, Y
+		@center_racket:
+			LDA #RACKET_CENTER_TILE
+			STA player_tile, Y
+			LDA #RACKET_ATTRIBUTE
+			STA player_attribute, Y
+			JSR IncrementOffset
+			CPX #RACKET_START_WIDTH-1
+			BCC @center_racket
+		
+		@right_edge_of_racket:
+			LDA #RACKET_RIGHT_TILE
+			STA player_tile, Y
+			LDA #RACKET_ATTRIBUTE
+			STA player_attribute, Y
+			JSR IncrementOffset
+		
+		CPX #RACKET_MAX_WIDTH
+		BCS @done_init_racket
+		
+		@invisible_racket:
+			LDA #BLANK_SPRITE_TILE
+			STA player_tile, Y
+			LDA #RACKET_ATTRIBUTE
+			STA player_attribute, Y
+			JSR IncrementOffset
+			CPX #RACKET_MAX_WIDTH
+			BCC @invisible_racket
+		
+		JMP @done_init_racket
+		
+
+			
+	@done_init_racket:
 	
 	; PLAYER 1 AND 2 SCORES	
-		;LDX #4 ; offset for high digit
+		LDX #4 ; offset for high digit
 		
 		LDA #32 ; y pos
 		STA p1_score_y			; p1 low digit

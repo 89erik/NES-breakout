@@ -41,40 +41,52 @@ BallPlacement:
 			LDA ball_y
 			CMP #RACKET_Y-SPRITE_SIZE
 			BCS @check_racket ; greater or equal
-			JMP @end_of_task ; No hit
+			JMP @end_of_task  ; No hit
 		
 		@ball_moves_upward:
 			LDA ball_y
-			CMP #ROOF
+			CMP #ROOF		     ; Hit roof
 			BEQ @invert_y_vector
-			CMP #FLOOR+1	; Past roof, underflow
+			CMP #FLOOR+1	     ; Past roof, underflow
 			BCS @invert_y_vector
-			JMP @end_of_task; No hit
+			JMP @end_of_task     ; No hit
 	
 		@check_racket:
 			CMP #RACKET_Y-SPRITE_SIZE + 1 + RACKET_MISS_TOLERANCE_Y
 			BCS @past_racket
 			
+			JSR RacketWidth		; A <- len(racket_width)
+			LSR					; A <- len(racket_width)/2
+			CLC
+			ADC #1+RACKET_MISS_TOLERANCE_X ; A <- (len(racket_width)/2) + 1 + general_tolerance
+			PHA					; tolerance -> stack
+			
 			JSR CheckHitFlipper ; A <- diff(ball, racket)
-			STA tmp				; Pushes diff(ball, racket)
+			PHA 				; diff -> stack (stack = diff, tolerance, ...)
 			JSR AbsoluteValue	; A <- abs(diff)
-			CMP #(RACKET_WIDTH/2)+1+RACKET_MISS_TOLERANCE_X ; Hit?
-			BCS @end_of_task	; No hit (ignores for now)
-			LDA tmp				; Pulls diff(ball, racket)
+			TAX					; X <- abs(diff)
+			PLA 				; A <- diff	(stack = tolerance, ...)
+			TAY					; Y <- diff
+			PLA					; A <- tolerance
+			STA tmp				; tmp <- tolerance
+			CPX tmp				; cmp(abs(diff), tolerance)
+			BCS @end_of_task	; diff > tolerance -> No hit (ignores for now)
+			
+			TYA					; A <- diff
 			JSR ASR				; Reduce diff
 			JSR ASR				; Reduce diff
 			JSR ASR				; Reduce diff
 			
 			CLC
-			ADC x_vector
+			ADC x_vector		; Add diff to x_vector
 			STA x_vector
-			JMP @invert_y_vector
+			JMP @invert_y_vector ; Bounce ball upwards
 
 		
 		@past_racket:
-			; Ball is below racket limit, reached bottom yet?
+			; Ball is below racket limit, reached floor yet?
 			CMP #FLOOR+SPRITE_SIZE
-			BCS FlipperNoHit ; NO HIT (breaks loop)
+			BCS FlipperNoHit ; Floor and no hit! (breaks main loop)
 			JMP @end_of_task
 			
 		@invert_y_vector:

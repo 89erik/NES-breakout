@@ -24,7 +24,7 @@ AbsoluteValue:
 	JSR SignedIsNegative
 	BNE @not_negative
 		LDA #0
-		CLC
+		SEC
 		SBC sub_routine_tmp
 		RTS
 	@not_negative:
@@ -60,3 +60,41 @@ ASR:
 		PLA
 		LSR A
 		RTS
+
+; A <- A * X
+Multiply:
+	CMP #0
+	BEQ @zero
+	CPX #0
+	BEQ @zero
+	
+	STA sub_routine_tmp
+	DEX
+	@loop:
+		CLC
+		ADC sub_routine_tmp
+		DEX
+		BNE @loop
+	
+	@end_of_sub_routine:
+		RTS
+	@zero:
+		LDA #0
+		RTS
+		
+; A <- racket_width * sprite_size
+RacketWidth:
+	LDA racket_width
+	LDX #SPRITE_SIZE
+	JSR Multiply
+	RTS
+	
+; X <- X+1
+; Y <- X*4
+IncrementOffset:
+	INX
+	TXA
+	ASL
+	ASL
+	TAY
+	RTS	

@@ -4,35 +4,23 @@
 	LDY #0 ; offset x4
 RacketPlacement:
 	; -[X-COORDINATE]-
-	LDA racket_pos
-	CPX #1
-	BEQ @add_one
-	CPX #2
-	BEQ @add_two
-	JMP @finished_adding
-	
-	@add_one:
-		CLC
-		ADC #SPRITE_SIZE
-		JMP @finished_adding
-	@add_two:
-		CLC
-		ADC #SPRITE_SIZE*2
-	@finished_adding:
+	TXA
+	PHA				; X -> stack
+	LDA #SPRITE_SIZE
+	JSR Multiply	; A <- X*SPRITE_SIZE
+	CLC
+	ADC racket_pos	; A <- racket_pos + (X*SPRITE_SIZE)
 	STA player_x, Y
 	
 	; -[Y-COORDINATE]-
 	LDA #RACKET_Y
 	STA player_y, Y
 	
-	INX
-	TXA
-	ASL
-	ASL ; y = x *4
-	TAY
-	
-	CPX #3
-	BNE RacketPlacement
+	PLA
+	TAX 			; X <- stack
+	JSR IncrementOffset
+	CPX racket_width
+	BCC RacketPlacement
 
 	
 		
@@ -61,7 +49,7 @@ RacketPlacement:
 		BEQ @right_button
 		LDA racket_pos
 		SEC
-		SBC #4
+		SBC #RACKET_SPEED
 		CMP #RIGHT_WALL+1
 		BCC @left_move_in_bounds ; A < RIGHT == A >= 0
 		LDA #LEFT_WALL
@@ -75,12 +63,21 @@ RacketPlacement:
 		LDA PLAYER1_CTRL ; Right
 		AND #1
 		BEQ @end_of_task
+		
+		JSR RacketWidth
+		STA tmp
+		LDA #RIGHT_WALL + SPRITE_SIZE
+		CLC
+		SBC tmp
+		STA tmp
+		
 		LDA racket_pos
 		CLC
-		ADC #4
-		CMP #RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
+		ADC #RACKET_SPEED
+		
+		CMP tmp ;#RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
 		BCC @right_move_in_bounds
-		LDA #RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
+		LDA tmp ;#RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
 	@right_move_in_bounds:
 		STA racket_pos
 		
