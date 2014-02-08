@@ -61,8 +61,8 @@ RacketPlacement:
         LDA racket_pos
         SEC
         SBC #RACKET_SPEED
-        CMP #RIGHT_WALL+1
-        BCC @left_move_in_bounds ; A < RIGHT == A >= 0
+        CMP #LEFT_WALL
+        BCS @left_move_in_bounds
         LDA #LEFT_WALL
     @left_move_in_bounds:
         STA racket_pos
