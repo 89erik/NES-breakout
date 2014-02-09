@@ -46,14 +46,15 @@ FillNametable1:
         ;   A <- brick_tile
         ; else
         ;   A <- $FF
-        ; TODO: check if present
         CheckForBrick:
             TYA
             PHA         ; Push Y to stack
             LDY #0      ; Borrows Y as loop iterator
             @iterate_x_coordinates:
+                LDA brick_present, Y
+                BNE @end_x_matching ; Skip non-present blocks
                 TXA
-                CMP brick_x, Y      ; Compare(brick_x, screen X)
+                CMP brick_x, Y      ; Compare(screen X, brick_x,)
                 BNE @end_x_matching ; X match?
                     PLA             ; Retrieve screen Y
                     CMP brick_y, Y  ; Compare(brick_y, screen Y)
