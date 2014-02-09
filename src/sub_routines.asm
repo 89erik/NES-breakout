@@ -11,11 +11,11 @@
 SignedIsNegative:
     CMP #LOWEST_SIGNED
     BCC @positive
-    ;@negative:
-        LDA #0
+    @negative:
+        LDA #TRUE
         RTS
     @positive:
-        LDA #1
+        LDA #FALSE
         RTS
 
 ; A <- abs(A)
@@ -29,6 +29,38 @@ AbsoluteValue:
         RTS
     @not_negative:
         LDA sub_routine_tmp
+        RTS
+
+SignedComparison:
+    LDA sub_routine_arg2
+    JSR SignedIsNegative
+    BNE @second_positive
+    @second_negative:
+        LDA sub_routine_arg1
+        JSR SignedIsNegative
+        BNE @second_negative_first_positive
+        @both_negative:
+            LDA sub_routine_arg1
+            JSR AbsoluteValue
+            STA sub_routine_arg1
+            LDA sub_routine_arg2
+            JSR AbsoluteValue
+            CMP sub_routine_arg1
+            RTS
+    @second_positive:
+        LDA sub_routine_arg1
+        JSR SignedIsNegative
+        BNE @both_positive
+        @second_positive_first_negative:
+            CLC ; <
+            RTS
+    @second_negative_first_positive:
+        SEC ; >=
+        RTS
+    
+    @both_positive:
+        LDA sub_routine_arg1
+        CMP sub_routine_arg2
         RTS
     
 ; A <- A/2  
@@ -98,3 +130,17 @@ IncrementOffset:
     ASL
     TAY
     RTS 
+
+DisablePpuRendering:
+    LDA #0
+    STA PPU_CTRL_1
+    STA PPU_CTRL_2
+    RTS
+    
+EnablePpuRendering:
+    LDA #%10010000 ; V-Blank interrupt ON, Sprite size = 8x8, Nametable 0
+    STA ppu_ctrl_1 ; BG tiles = $1000, Spr tiles = $0000, PPU adr inc = 1B
+    STA PPU_CTRL_1
+    LDA #%00011110
+    STA PPU_CTRL_2
+    RTS
