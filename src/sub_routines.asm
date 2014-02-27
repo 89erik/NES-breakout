@@ -113,6 +113,24 @@ Multiply:
     @zero:
         LDA #0
         RTS
+
+; X <- A / X
+; A <- A mod X
+; Will stall on division by zero!
+Divide:
+    STX sub_routine_tmp
+    LDX #0
+    @loop:
+        INX
+        SEC
+        SBC sub_routine_tmp
+        BEQ @end
+        BCS @loop
+        @underflow:
+            ADC sub_routine_tmp            
+            DEX
+    @end:
+    RTS
         
 ; A <- racket_width * sprite_size
 RacketWidth:
