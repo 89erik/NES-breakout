@@ -43,6 +43,10 @@ SPRITE_SIZE             = 8
 TILES_X                 = 32
 TILES_Y                 = 30
 
+NAMETABLE1_H            = $20
+NAMETABLE2_H            = $24
+NAMETABLES_L            = $00
+
 ; ---[ GRAPHIC CONSTANTS ]---
 BG_COLOR                = $11
 

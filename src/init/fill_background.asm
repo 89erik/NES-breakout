@@ -1,9 +1,7 @@
-JSR LoadLevel1
-
-FillNametable1: 
-        LDA #$20
+FillBackground: 
+        LDA #NAMETABLE1_H
         STA PPU_ADRESS
-        LDA #0
+        LDA #NAMETABLES_L
         STA PPU_ADRESS
         
         LDY #0
@@ -18,12 +16,8 @@ FillNametable1:
                 BEQ @wall
                 
                 JSR CheckForBrick   ; A <- brick tile
-                CMP #$FF
-                BNE @tile_selected  ; Not null -> tile_selected
+                JMP @tile_selected
                 
-                @default:
-                    LDA #BLANK_BG_TILE
-                    JMP @tile_selected
                 @wall:
                     LDA #WALL_TILE
                     JMP @tile_selected
@@ -40,12 +34,12 @@ FillNametable1:
                 
         
         
-        JMP FillNametable2
+        RTS
         
         ; if brick exists at X,Y:
         ;   A <- brick_tile
         ; else
-        ;   A <- $FF
+        ;   A <- #BLANK_BG_TILE
         CheckForBrick:
             TYA
             PHA         ; Push Y to stack
@@ -67,7 +61,7 @@ FillNametable1:
             @no_x_match:
                 PLA
                 TAY         ; Retrieves Y from stack
-                LDA #$FF    ; Signals failure
+                LDA #BLANK_BG_TILE
                 RTS
             
             @found_match:
@@ -86,9 +80,9 @@ FillNametable1:
         
         
 FillNametable2:
-        LDA #$24
+        LDA #NAMETABLE2_H
         STA PPU_ADRESS
-        LDA #0
+        LDA #NAMETABLES_L
         STA PPU_ADRESS
         
         LDX #30     ;remaining rows
