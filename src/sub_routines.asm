@@ -114,8 +114,8 @@ Multiply:
         LDA #0
         RTS
 
-; X <- A / X
-; A <- A mod X
+; A <- A / X
+; X <- A mod X
 ; Will stall on division by zero!
 Divide:
     STX sub_routine_tmp
@@ -130,6 +130,10 @@ Divide:
             ADC sub_routine_tmp            
             DEX
     @end:
+    ; swap(A, X):
+    STX sub_routine_tmp
+    TAX
+    LDA sub_routine_tmp
     RTS
         
 ; A <- racket_width * sprite_size
