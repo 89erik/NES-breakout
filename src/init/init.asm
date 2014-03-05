@@ -12,9 +12,7 @@
     BPL :-
 
 ; -[TURN OFF RENDERING]-
-    LDA #0
-    STA PPU_CTRL_1
-    STA PPU_CTRL_2
+    JSR DisablePpuRendering
 
 ; -[LOAD PALETTE]-
     LDA #$3F
@@ -31,7 +29,8 @@
         BNE @load_palette
 
 ; -[FILL BACKGROUND]-
-    .include "src/init/fill_background.asm"
+    JSR LoadLevel1
+    JSR FillBackground
     
 ; -[SET SCROLL]-
     LDA #0
@@ -45,9 +44,9 @@
 ;--------------------------------------------------------
 ; Test area
 JMP @done
-    LDA #1
-    LDX #0
-    BEQ @done
+    
+    
+    
     @derp: JMP @derp
     
 @done:
@@ -66,6 +65,8 @@ JMP @done
     STA racket_pos
     LDA #TRUE
     STA holding_ball
+    LDA #10
+    STA p1_score
 
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
@@ -145,8 +146,4 @@ JMP @done
         
     
 ; -[INIT PPU (ENABLES RENDERING)]-
-    LDA #%10010000 ; V-Blank interrupt ON, Sprite size = 8x8, Nametable 0
-    STA ppu_ctrl_1 ; BG tiles = $1000, Spr tiles = $0000, PPU adr inc = 1B
-    STA PPU_CTRL_1
-    LDA #%00011110
-    STA PPU_CTRL_2
+    JSR EnablePpuRendering

@@ -17,6 +17,7 @@
 .segment "CODE"
         .include "src/sub_routines.asm"     ; General sub-routines
         .include "src/levels/level1.asm"
+        .include "src/init/fill_background.asm"
     Start:
         .include "src/init/init.asm"        ; Initialization procedure
         .include "src/loop/loop.asm"        ; Physics to be performed per framerate
