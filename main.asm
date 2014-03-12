@@ -16,7 +16,7 @@
     
 .segment "CODE"
         .include "src/sub_routines.asm"     ; General sub-routines
-        .include "src/levels/level1.asm"
+        .include "src/load_level.asm"
         .include "src/init/fill_background.asm"
     Start:
         .include "src/init/init.asm"        ; Initialization procedure
@@ -28,6 +28,7 @@
     
 .segment "DATA" 
     .include "data/data.asm"
+    .include "data/level1.asm"
     
 .segment "ZERO_PAGE"
     .include "memory/ram.asm"               ; Variables in RAM

@@ -29,7 +29,9 @@
         BNE @load_palette
 
 ; -[FILL BACKGROUND]-
-    JSR LoadLevel1
+    LDA #1
+    STA level
+    JSR SetAndLoadLevel
     JSR FillBackground
     
 ; -[SET SCROLL]-
@@ -44,9 +46,24 @@
 ;--------------------------------------------------------
 ; Test area
 JMP @done
+
     
     
+ ;   LDA #<level
+ ;   STA pointer
+ ;   LDA #>level
+ ;   LDX #1
+ ;   STA pointer, X
     
+    
+ ;   LDA #$ab
+ ;   STA level
+    
+    
+  ;  LDY #0
+  ;  LDA (<pointer), Y
+
+
     @derp: JMP @derp
     
 @done:
