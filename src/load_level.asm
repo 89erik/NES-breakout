@@ -32,9 +32,8 @@ LoadLevel:
         LDA (<level_data), Y
         STA brick_tile, X
         INY
-        LDA (<level_data), Y
+        LDA #TRUE
         STA brick_present, X
-        INY
         INX
         CPX level_n_data
         BCC @next_tile
