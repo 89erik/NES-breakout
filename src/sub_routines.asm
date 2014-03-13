@@ -135,6 +135,18 @@ Divide:
     TAX
     LDA sub_routine_tmp
     RTS
+    
+; XY = A + XY
+LongAddition:
+    STY sub_routine_tmp
+    CLC
+    ADC sub_routine_tmp
+    BCC @no_carry
+        INX
+    @no_carry:
+    TAY
+    RTS
+
         
 ; A <- racket_width * sprite_size
 RacketWidth:
