@@ -82,8 +82,8 @@ JMP @done
     STA racket_pos
     LDA #TRUE
     STA holding_ball
-    LDA #10
-    STA p1_score
+    LDA #INITIAL_SCORE
+    STA score
 
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
@@ -143,23 +143,22 @@ JMP @done
     ; PLAYER 1 AND 2 SCORES 
         LDX #4 ; offset for high digit
         
-        LDA #32 ; y pos
-        STA p1_score_y          ; p1 low digit
-        STA p1_score_y, X       ; p1 high digit
-        
-        LDA #$10 ; tile number
-        STA p1_score_tile           ; p1 low digit
-        STA p1_score_tile, X        ; p1 high digit
+        ; y pos
+        LDA #32
+        STA score_y          ; p1 low digit
+        STA score_y, X       ; p1 high digit
+
+        ; x pos
+        LDA #32 
+        STA score_x, X       ; p1 high digit
+        LDA #40
+        STA score_x          ; p1 low digit
         
         LDA #0 ; attribute byte
-        STA p1_score_attribute          ; p1 low digit
-        STA p1_score_attribute, X       ; p1 high digit
-        
-        ; x pos player 1
-        LDA #32 
-        STA p1_score_x, X       ; p1 high digit
-        LDA #40
-        STA p1_score_x          ; p1 low digit
+        STA score_attribute          ; p1 low digit
+        STA score_attribute, X       ; p1 high digit
+
+        JSR DrawScore
         
     
 ; -[INIT PPU (ENABLES RENDERING)]-

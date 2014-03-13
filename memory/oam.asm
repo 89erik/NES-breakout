@@ -15,14 +15,14 @@
 								.byte 0,0,0,0	; flipper 5
 								.byte 0,0,0,0	; flipper 6
 	
-	ball_y:					.byte 0
-	ball_tile:				.byte 0
-	ball_attribute:			.byte 0
-	ball_x:					.byte 0
+	ball_y:					    .byte 0
+	ball_tile:				    .byte 0
+	ball_attribute:			    .byte 0
+	ball_x:					    .byte 0
 
-	p1_score_y:					.byte 0
-	p1_score_tile:				.byte 0
-	p1_score_attribute:			.byte 0
-	p1_score_x:					.byte 0
+	score_y:					.byte 0
+	score_tile:				    .byte 0
+	score_attribute:			.byte 0
+	score_x:					.byte 0
 								.byte 0,0,0,0	; high digit
 								

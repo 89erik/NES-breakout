@@ -166,3 +166,44 @@ EnablePpuRendering:
     LDA #%00011110
     STA PPU_CTRL_2
     RTS
+    
+DrawScore:
+    LDA score
+    LDY #4 ; Offset for high digit
+    CMP #10
+    BCS @p1_two_digits
+    @p1_one_digit:
+        CLC
+        ADC #SPRITE_NUMBERS_OFFSET
+        STA score_tile ; low digit
+        
+        LDA #SPRITE_NUMBERS_OFFSET
+        STA score_tile, Y ; high digit
+        
+        RTS
+    @p1_two_digits:
+        JSR @split_digits
+        
+        CLC
+        ADC #SPRITE_NUMBERS_OFFSET
+        STA score_tile ; low digit
+        
+        TXA
+        CLC
+        ADC #SPRITE_NUMBERS_OFFSET
+        STA score_tile, Y ; high digit
+        
+        RTS
+        
+    ; Input:    A = two-digit input
+    ; Output:   X = high digit
+    ;           A = low digit
+    @split_digits:
+        LDX #0
+        @check_again:
+            INX 
+            SEC
+            SBC #10
+            CMP #10
+            BCS @check_again
+        RTS

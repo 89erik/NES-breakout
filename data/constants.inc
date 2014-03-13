@@ -33,6 +33,7 @@ RACKET_MISS_TOLERANCE_Y = 4
 RACKET_SPEED            = 4
 BALL_SPEED_Y            = 2
 
+INITIAL_SCORE           = 10
 
 ; ---[ ARCHITECTURAL CONSTANTS ]---
 LOWEST_SIGNED           = -128
@@ -85,6 +86,8 @@ RACKET_CENTER_TILE      = 3
 RACKET_RIGHT_TILE       = 4
 
 RACKET_ATTRIBUTE        = 0
+
+SPRITE_NUMBERS_OFFSET   = $10
 
 ; ---[ BACKGROUND TILES ]---
 WALL_TILE               = $30
