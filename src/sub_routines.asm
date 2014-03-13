@@ -176,7 +176,6 @@ DrawScore:
         CLC
         ADC #SPRITE_NUMBERS_OFFSET
         STA score_tile ; low digit
-        
         LDA #SPRITE_NUMBERS_OFFSET
         STA score_tile, Y ; high digit
         
@@ -207,3 +206,35 @@ DrawScore:
             CMP #10
             BCS @check_again
         RTS
+
+WaitForPlayer:
+    ; Signal controller for read
+    LDA #1
+    STA PLAYER1_CTRL
+    LDA #0
+    STA PLAYER1_CTRL
+    
+    ; Read controller, sequence is as follows:
+    ; A, B, Select, Start, Up, Down, Left, Right
+    LDA PLAYER1_CTRL ; A
+    LDA PLAYER1_CTRL ; B
+    LDA PLAYER1_CTRL ; Select
+    LDA PLAYER1_CTRL ; Start
+    AND #1
+    BNE @stop_waiting
+    LDA PLAYER1_CTRL ; Up
+    AND #1
+    BNE @stop_waiting
+    LDA PLAYER1_CTRL ; Down
+    AND #1
+    BNE @stop_waiting
+    LDA PLAYER1_CTRL ; Left
+    AND #1
+    BNE @stop_waiting
+    LDA PLAYER1_CTRL ; Right
+    AND #1
+    BNE @stop_waiting
+    JMP WaitForPlayer
+    
+    @stop_waiting:
+    RTS

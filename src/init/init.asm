@@ -84,7 +84,7 @@ JMP @done
     STA holding_ball
     LDA #INITIAL_SCORE
     STA score
-
+    
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
     ; BALL
@@ -135,9 +135,6 @@ JMP @done
             BCC @invisible_racket
         
         JMP @done_init_racket
-        
-
-            
     @done_init_racket:
     
     ; PLAYER 1 AND 2 SCORES 
@@ -158,8 +155,13 @@ JMP @done
         STA score_attribute          ; p1 low digit
         STA score_attribute, X       ; p1 high digit
 
-        JSR DrawScore
-        
+        ; Score initially invisible
+        LDA #0
+        STA score_tile    ; low digit
+        STA score_tile, X ; high digit
+    
+    JSR StartScreen
+    JSR DrawScore
     
 ; -[INIT PPU (ENABLES RENDERING)]-
     JSR EnablePpuRendering

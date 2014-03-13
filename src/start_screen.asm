@@ -1,0 +1,3 @@
+StartScreen:
+    JSR WaitForPlayer
+    RTS
