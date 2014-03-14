@@ -137,7 +137,7 @@ Divide:
     RTS
     
 ; XY = A + XY
-LongAddition:
+AddLong:
     STY sub_routine_tmp
     CLC
     ADC sub_routine_tmp
@@ -147,7 +147,69 @@ LongAddition:
     TAY
     RTS
 
+; XY <- sub_routine_arg1 * sub_routine_arg2
+MultiplyLong:
+    @init_frame:
+        LDA sub_routine_arg2
+        PHA
+        LDA #0
+        PHA
+        PHA
+    @init_frame_pointer:
+        TSX
+        STX fp
+    @detect_zero:
+        LDA sub_routine_arg1
+        BEQ @zero
+        LDA sub_routine_arg2
+        BEQ @zero
+    @loop:
+        @load_regs_before_call:
+            LDY @x
+            LDA (<fp), Y
+            TAX                  ; Retrieves X accumulator
+            LDY @y
+            LDA (<fp), Y
+            TAY                  ; Retrieves Y accumulator
+            LDA sub_routine_arg1 ; Retrieves add value
+        @call_add_long:    
+            JSR AddLong
+        @store_regs_after_call:    
+            TYA
+            LDY @y
+            STA (<fp), Y          ; Preserves Y accumulator
+            TXA
+            LDY @x
+            STA (<fp), Y          ; Preserves X accumulator
+        @loop_maintenance:
+            LDY @counter
+            LDA (<fp), Y
+            TAX
+            DEX
+            TXA
+            STA (<fp), Y
+            CPX #0
+            BNE @loop
         
+    @end_of_sub_routine:
+        PLA
+        TAY ; pop Y
+        PLA
+        TAX ; pop X
+        PLA ; pop counter
+        RTS
+    @zero:
+        LDY @y
+        LDA #0
+        STA (<fp), Y
+        JMP @end_of_sub_routine
+
+    ; Local variables
+    @counter: .byte 3
+    @x:       .byte 2
+    @y:       .byte 1
+
+    
 ; A <- racket_width * sprite_size
 RacketWidth:
     LDA racket_width

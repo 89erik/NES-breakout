@@ -48,6 +48,8 @@ NAMETABLE1_H            = $20
 NAMETABLE2_H            = $24
 NAMETABLES_L            = $00
 
+STACK_PAGE              = $01
+
 ; ---[ GRAPHIC CONSTANTS ]---
 BG_COLOR                = $11
 

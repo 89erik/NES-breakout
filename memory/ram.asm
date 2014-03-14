@@ -5,7 +5,7 @@
 ; in this file represents places in the memory,     ;
 ; and can be refered to by the labels.				;
 ; ------------------------------------------------- ;
-	 
+
 	; System state
 	bg_color:					.byte 0
 	wait_for_v_blank:			.byte 0
@@ -39,4 +39,6 @@
     level:                      .byte 0
     level_n_data:               .byte 0
     level_data:                 .byte 0,0
+
+    fp:                         .byte 0,0
     

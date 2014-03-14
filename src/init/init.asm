@@ -42,6 +42,9 @@
 ; -[INIT STACK]-
     LDX #$FF
     TXS
+    LDA #STACK_PAGE
+    LDX #1
+    STA fp, X
 
 ;--------------------------------------------------------
 ; Test area
