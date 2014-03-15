@@ -35,6 +35,9 @@
     brick_y:                    .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     brick_tile:                 .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     brick_present:              .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    bricks_to_update:           .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    first_brick_to_update:      .byte 0
+    last_brick_to_update:       .byte 0
     
     level:                      .byte 0
     level_n_data:               .byte 0

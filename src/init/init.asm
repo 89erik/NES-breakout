@@ -16,9 +16,9 @@
 
 ; -[LOAD PALETTE]-
     LDA #$3F
-    STA PPU_ADRESS  ; PPU adress = start of palette
+    STA PPU_ADDRESS  ; PPU address = start of palette
     LDA #$00
-    STA PPU_ADRESS      
+    STA PPU_ADDRESS      
     
     LDX #0
     @load_palette:
@@ -27,17 +27,6 @@
         INX
         CPX #32
         BNE @load_palette
-
-; -[FILL BACKGROUND]-
-    LDA #1
-    STA level
-    JSR SetAndLoadLevel
-    JSR FillBackground
-    
-; -[SET SCROLL]-
-    LDA #0
-    STA PPU_SCROLL
-    STA PPU_SCROLL
     
 ; -[INIT STACK]-
     LDX #$FF
@@ -50,24 +39,15 @@
 ; Test area
 JMP @done
 
-    
-    
- ;   LDA #<level
- ;   STA pointer
- ;   LDA #>level
- ;   LDX #1
- ;   STA pointer, X
-    
-    
- ;   LDA #$ab
- ;   STA level
-    
-    
-  ;  LDY #0
-  ;  LDA (<pointer), Y
+    LDA #$00
+    STA sub_routine_arg1
+    LDA #$ef
+    STA sub_routine_arg2
 
-
-    @derp: JMP @derp
+    LDX #$12
+    LDY #$43
+    JSR AddLong
+    @stop: JMP @stop
     
 @done:
 ;--------------------------------------------------------
@@ -163,7 +143,19 @@ JMP @done
         STA score_tile    ; low digit
         STA score_tile, X ; high digit
     
-    JSR StartScreen
+    ;JSR StartScreen
+    
+; -[FILL BACKGROUND]-
+    LDA #1
+    STA level
+    JSR SetAndLoadLevel
+    JSR FillBackground
+        
+; -[SET SCROLL]-
+    LDA #0
+    STA PPU_SCROLL
+    STA PPU_SCROLL
+    
     JSR DrawScore
     
 ; -[INIT PPU (ENABLES RENDERING)]-

@@ -1,8 +1,8 @@
 FillBackground: 
         LDA #NAMETABLE1_H
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         LDA #NAMETABLES_L
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         
         LDY #0
         @row:
@@ -81,9 +81,9 @@ FillBackground:
         
 FillNametable2:
         LDA #NAMETABLE2_H
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         LDA #NAMETABLES_L
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         
         LDX #30     ;remaining rows
         
@@ -101,7 +101,7 @@ FillNametable2:
         BNE @save_row
 
         LDA #$28
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         LDA #38
-        STA PPU_ADRESS
+        STA PPU_ADDRESS
         

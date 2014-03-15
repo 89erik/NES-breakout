@@ -2,15 +2,21 @@
 PPU_CTRL_1              = $2000
 PPU_CTRL_2              = $2001
 PPU_STATUS              = $2002
+SPR_RAM_ADDRESS         = $2003
+SPR_RAM_VALUE           = $2004
 PPU_SCROLL              = $2005
-PPU_ADRESS              = $2006
+PPU_ADDRESS             = $2006
 PPU_VALUE               = $2007
 
 PLAYER1_CTRL            = $4016
 PLAYER2_CTRL            = $4017
 
+SPR_RAM_DMA             = $4014
+
 NAME_TABLE_1            = $20
 NAME_TABLE_2            = $24
+
+NAME_TABLE_WIDTH        = $20
 
 ; ---[ GAME CONSTANTS ]---
 MAX_Y_VECTOR            = $0A

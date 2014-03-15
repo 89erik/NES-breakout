@@ -136,8 +136,8 @@ Divide:
     LDA sub_routine_tmp
     RTS
     
-; XY = A + XY
-AddLong:
+; XY <- A + XY
+AccumulateLong:
     STY sub_routine_tmp
     CLC
     ADC sub_routine_tmp
@@ -147,8 +147,22 @@ AddLong:
     TAY
     RTS
 
+; XY <- XY + sub_routine_arg1 sub_routine_arg2
+AddLong:
+    STX sub_routine_tmp
+    LDA sub_routine_arg1
+    CLC
+    ADC sub_routine_tmp
+    TAX
+    LDA sub_routine_arg2
+    JSR AccumulateLong  
+    RTS
+
+    
 ; XY <- sub_routine_arg1 * sub_routine_arg2
 MultiplyLong:
+    LDA fp
+    PHA ; preserve fp
     @init_frame:
         LDA sub_routine_arg2
         PHA
@@ -173,7 +187,7 @@ MultiplyLong:
             TAY                  ; Retrieves Y accumulator
             LDA sub_routine_arg1 ; Retrieves add value
         @call_add_long:    
-            JSR AddLong
+            JSR AccumulateLong
         @store_regs_after_call:    
             TYA
             LDY @y
@@ -197,6 +211,8 @@ MultiplyLong:
         PLA
         TAX ; pop X
         PLA ; pop counter
+        PLA ; retrieve fp
+        STA fp
         RTS
     @zero:
         LDY @y
@@ -312,3 +328,6 @@ WaitForPlayer:
     
     @stop_waiting:
     RTS
+
+Halt: 
+    JMP Halt
