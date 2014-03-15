@@ -11,11 +11,11 @@
 
 
 MainLoop:
-    LDA wait_for_v_blank
-    BEQ MainLoop
+    LDA v_blank_complete
+    BNE MainLoop
     
-    LDA #0
-    STA wait_for_v_blank
+    LDA #FALSE
+    STA v_blank_complete
 
     
     ; Loop procedures

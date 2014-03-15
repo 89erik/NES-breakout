@@ -329,5 +329,19 @@ WaitForPlayer:
     @stop_waiting:
     RTS
 
+; Sleep for amount of frames
+; given by X
+Sleep:
+    @wait:
+        LDA v_blank_complete
+        BNE @wait
+    @reset_variable:
+        LDA #FALSE
+        STA v_blank_complete
+    @loop_maintenance:
+        DEX
+        BNE @wait
+    RTS
+
 Halt: 
     JMP Halt

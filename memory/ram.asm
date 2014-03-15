@@ -8,7 +8,7 @@
 
 	; System state
 	bg_color:					.byte 0
-	wait_for_v_blank:			.byte 0
+	v_blank_complete:			.byte 0
 	panic_mode:					.byte 0
 	
 	; Player state

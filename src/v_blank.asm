@@ -56,7 +56,6 @@
                     STA sub_routine_arg2
                     
                     JSR AddLong
-                    JMP Halt
                     
                 STX PPU_ADDRESS
                 STY PPU_ADDRESS
@@ -97,8 +96,8 @@
         STA PPU_SCROLL
 
         ; -[PREPARE FOR RETURN]-
-        LDA #FALSE
-        STA wait_for_v_blank
+        LDA #TRUE
+        STA v_blank_complete
         
         PLA
         STA fp          ; Retrieve frame pointer
