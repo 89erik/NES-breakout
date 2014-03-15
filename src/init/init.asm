@@ -143,20 +143,30 @@ JMP @done
         STA score_tile    ; low digit
         STA score_tile, X ; high digit
     
-    ;JSR StartScreen
+    
+    JSR StartScreen
     
 ; -[FILL BACKGROUND]-
     LDA #1
     STA level
     JSR SetAndLoadLevel
-    JSR FillBackground
-        
-; -[SET SCROLL]-
-    LDA #0
-    STA PPU_SCROLL
-    STA PPU_SCROLL
+    
+    LDX #0
+    STX first_brick_to_update
+    STX last_brick_to_update
+    @loop:
+        TXA
+        STA bricks_to_update, X
+        INX
+        CPX n_bricks
+        BCC @loop
+    STX last_brick_to_update
     
     JSR DrawScore
     
+    
+    
 ; -[INIT PPU (ENABLES RENDERING)]-
-    JSR EnablePpuRendering
+    ;JSR EnablePpuRendering
+
+    

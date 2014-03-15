@@ -1,9 +1,21 @@
 SetAndLoadLevel:
     LDA level
+    CMP #0
+    BEQ @start_screen
     CMP #1
     BEQ @l1
     JMP @end_case
     
+    @start_screen:
+        LDA #>start_screen_data
+        LDX #1
+        STA level_data, X
+        LDA #<start_screen_data
+        STA level_data
+        
+        LDA start_screen_n_data
+        STA level_n_data
+        JMP @end_case
     @l1:
         LDA #<level_1_data
         STA level_data
