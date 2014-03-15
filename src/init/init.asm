@@ -156,7 +156,10 @@ JMP @done
     STX last_brick_to_update
     @loop:
         TXA
-        STA bricks_to_update, X
+        PHA
+        JSR UpdateBackgroundTile
+        PLA
+        TAX
         INX
         CPX n_bricks
         BCC @loop

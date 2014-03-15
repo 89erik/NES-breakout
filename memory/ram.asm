@@ -36,6 +36,8 @@
     brick_tile:                 .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     brick_present:              .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     bricks_to_update:           .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    brick_to_update_high_addrs: .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    brick_to_update_low_addrs:  .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     first_brick_to_update:      .byte 0
     last_brick_to_update:       .byte 0
     

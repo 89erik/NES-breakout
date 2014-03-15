@@ -345,3 +345,52 @@ Sleep:
 
 Halt: 
     JMP Halt
+
+; Adds tile to the list of background tiles to be updated,
+; indexed by A. Also calculates PPU addresses to take a load
+; off the V-Blank routine.
+UpdateBackgroundTile:
+    PHA
+    LDA first_brick_to_update
+    CMP last_brick_to_update
+    BNE @end_equality_check
+        LDA #0
+        STA first_brick_to_update
+        STA last_brick_to_update
+    @end_equality_check:
+
+    @add_tile_to_list:
+        PLA
+        LDX last_brick_to_update
+        STA bricks_to_update, X
+
+    @calculate_ppu_address:
+        LDX last_brick_to_update
+        LDA bricks_to_update, X
+        TAX                     ; X <- bricks_to_update[i]
+        LDA brick_x, X          ; A <- brick_x[X]
+        PHA                     ; push(brick_x[X])
+        LDA brick_y, X          ; A <- brick_y[X]
+        STA sub_routine_arg1
+        LDA #NAME_TABLE_WIDTH
+        STA sub_routine_arg2
+        @multiply_rows:
+            JSR MultiplyLong        ; XY <- brick_y[X] * NAME_TABLE_WIDTH
+        @add_column:
+            PLA                     ; A <- pull(brick_y[X])
+            JSR AccumulateLong
+        @add_name_table_offset:
+            LDA #NAMETABLE1_H
+            STA sub_routine_arg1
+            LDA #NAMETABLES_L
+            STA sub_routine_arg2
+            JSR AddLong
+        @store_addresses:
+            TXA
+            LDX last_brick_to_update
+            STA brick_to_update_high_addrs, X
+            TYA
+            STA brick_to_update_low_addrs, X
+        INX
+        STX last_brick_to_update
+    RTS

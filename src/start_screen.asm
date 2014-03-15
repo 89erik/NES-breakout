@@ -49,12 +49,7 @@ StartScreen:
             LDY #0
             TXA
             PHA
-            STA bricks_to_update, Y
-            
-            LDA #0
-            STA first_brick_to_update
-            LDA #1
-            STA last_brick_to_update
+            JSR UpdateBackgroundTile
             
             LDX #1
             JSR Sleep

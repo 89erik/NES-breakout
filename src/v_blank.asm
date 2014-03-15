@@ -42,31 +42,13 @@
         
         
     @update_background:
-        @store_ppu_address:
+        @set_ppu_address:
             LDX first_brick_to_update
-            LDA bricks_to_update, X
-            TAX                     ; X <- bricks_to_update[i]
-            LDA brick_x, X          ; A <- brick_x[X]
-            PHA                     ; push(brick_x[X])
-            LDA brick_y, X          ; A <- brick_y[X]
-            STA sub_routine_arg1
-            LDA #NAME_TABLE_WIDTH
-            STA sub_routine_arg2
-            @multiply_rows:
-                JSR MultiplyLong        ; XY <- brick_y[X] * NAME_TABLE_WIDTH
-            @add_column:
-                PLA                     ; A <- pull(brick_y[X])
-                JSR AccumulateLong
-            @add_name_table_offset:
-                LDA #NAMETABLE1_H
-                STA sub_routine_arg1
-                LDA #NAMETABLES_L
-                STA sub_routine_arg2
-                JSR AddLong
-            STX PPU_ADDRESS
-            STY PPU_ADDRESS
+            LDA brick_to_update_high_addrs, X
+            STA PPU_ADDRESS
+            LDA brick_to_update_low_addrs, X
+            STA PPU_ADDRESS
         @store_tile_to_ppu:
-            LDX first_brick_to_update
             LDA bricks_to_update, X
             TAX                     ; X <- bricks_to_update[i]
             LDA brick_present
