@@ -13,6 +13,6 @@ FlipperNoHit:
 
 GameOver: 
     LDA #0
-    STA x_vector
-    STA y_vector
+    STA x_velocity
+    STA y_velocity
     RTS

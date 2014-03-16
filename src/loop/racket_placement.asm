@@ -45,7 +45,7 @@ RacketPlacement:
                 LDA #FALSE
                 STA holding_ball
                 LDA #-BALL_SPEED_Y
-                STA y_vector
+                STA y_velocity
         
         @ignore_A_button:
         LDA PLAYER1_CTRL ; B

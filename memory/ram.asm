@@ -18,8 +18,8 @@
 	holding_ball:				.byte 0
 	
 	; The ball
-	x_vector: 					.byte 0
-	y_vector: 					.byte 0
+	x_velocity:                 .byte 0
+	y_velocity:                 .byte 0
 	
 	; Registers
 	ppu_ctrl_1:					.byte 0

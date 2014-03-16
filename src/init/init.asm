@@ -56,9 +56,9 @@ JMP @done
     LDA #0
     STA bg_color
     LDA #0
-    STA x_vector
+    STA x_velocity
     LDA #BALL_SPEED_Y
-    STA y_vector
+    STA y_velocity
     LDA #RACKET_START_WIDTH
     STA racket_width
     LDA #(RIGHT_WALL/2) - (RACKET_START_WIDTH/2)

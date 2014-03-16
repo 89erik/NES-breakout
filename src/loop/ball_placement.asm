@@ -4,8 +4,8 @@ BallPlacement:
     @hold_ball:
         ; STOP BALL MOVEMENT
         LDA #0
-        STA x_vector
-        STA y_vector
+        STA x_velocity
+        STA y_velocity
         
         ; SET BALL X POSITION AFTER RACKET
         JSR RacketWidth     ; A <- len(racket_width)
@@ -26,14 +26,14 @@ BallPlacement:
         ; -[UPDATE X]-
         LDA ball_x      ; Load x position
         CLC             ; Clear carry bit
-        ADC x_vector    ; Add vector to position
+        ADC x_velocity    ; Add velocity to position
         TAX             ; Copy A to X
         STA ball_x      ; Update OAM
         
         ; -[UPDATE Y]-
         LDA ball_y      ; Load y position
         CLC             ; Clear carry bit
-        ADC y_vector    ; Add vector to position
+        ADC y_velocity    ; Add velocity to position
         TAY             ; Copy A to X
         STA ball_y      ; Update OAM    
     
@@ -49,15 +49,15 @@ BallPlacement:
         @wall_hit:
             LDA #0
             SEC
-            SBC x_vector
-            STA x_vector ; Inverts x_vector
+            SBC x_velocity
+            STA x_velocity ; Inverts x_velocity
             JMP @end_of_task ; JMP to @check_y_edge?
 
         
         ; -[HIT ROOF OR FLOOR?]-
     @check_y_edge:
-        LDA y_vector
-        JSR SignedIsNegative    ; Check if y-vector is negative
+        LDA y_velocity
+        JSR SignedIsNegative    ; Check if y-velocity is negative
         BEQ @ball_moves_upward
 
         @ball_moves_downward:
@@ -69,9 +69,9 @@ BallPlacement:
         @ball_moves_upward:
             LDA ball_y
             CMP #ROOF            ; Hit roof
-            BEQ @invert_y_vector
+            BEQ @invert_y_velocity
             CMP #FLOOR+1         ; Past roof, underflow
-            BCS @invert_y_vector
+            BCS @invert_y_velocity
             JMP @end_of_task     ; No hit
     
         @check_racket:
@@ -101,9 +101,9 @@ BallPlacement:
             JSR ASR             ; Reduce diff
             
             CLC
-            ADC x_vector        ; Add diff to x_vector
-            STA x_vector
-            JMP @invert_y_vector ; Bounce ball upwards
+            ADC x_velocity        ; Add diff to x_velocity
+            STA x_velocity
+            JMP @invert_y_velocity ; Bounce ball upwards
 
         
         @past_racket:
@@ -113,12 +113,12 @@ BallPlacement:
             JSR FlipperNoHit ; No hit
             JMP @end_of_task
             
-        @invert_y_vector:
+        @invert_y_velocity:
             ; Bounce ball
             LDA #0
             SEC
-            SBC y_vector
-            STA y_vector
+            SBC y_velocity
+            STA y_velocity
             JMP @end_of_task
 
     
