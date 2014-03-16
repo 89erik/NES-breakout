@@ -53,19 +53,3 @@ LoadLevel:
         
     STX n_bricks
     RTS
-
-DrawLevel:
-    LDX #0
-    STX first_brick_to_update
-    STX last_brick_to_update
-    @loop:
-        TXA
-        PHA
-        JSR UpdateBackgroundTile
-        PLA
-        TAX
-        INX
-        CPX n_bricks
-        BCC @loop
-    STX last_brick_to_update
-    RTS

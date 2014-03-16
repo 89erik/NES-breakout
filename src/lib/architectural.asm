@@ -1,10 +1,3 @@
-; ------------------------------------------------- ;
-; -----------[ GENERAL SUB-ROUTINES ]-------------- ;
-; ------------------------------------------------- ;
-; This file contains some general sub-routines      ;
-; used at several parts of the system               ;
-; ------------------------------------------------- ;
-
 ; Is A negative?
 ; Yes: A <- 0
 ; No:  A <- 1
@@ -31,6 +24,7 @@ AbsoluteValue:
         LDA sub_routine_tmp
         RTS
 
+; CMP(sub_routine_arg1, sub_routine_arg2)
 SignedComparison:
     LDA sub_routine_arg2
     JSR SignedIsNegative
@@ -136,7 +130,7 @@ Divide:
     LDA sub_routine_tmp
     RTS
     
-; XY <- A + XY
+; XY <- XY + A
 AccumulateLong:
     STY sub_routine_tmp
     CLC
@@ -225,112 +219,8 @@ MultiplyLong:
     @x:       .byte 2
     @y:       .byte 1
 
-    
-; A <- racket_width * sprite_size
-RacketWidth:
-    LDA racket_width
-    LDX #SPRITE_SIZE
-    JSR Multiply
-    RTS
-    
-; X <- X+1
-; Y <- X*4
-IncrementOffset:
-    INX
-    TXA
-    ASL
-    ASL
-    TAY
-    RTS 
 
-DisablePpuRendering:
-    LDA #0
-    STA PPU_CTRL_1
-    STA PPU_CTRL_2
-    RTS
-    
-EnablePpuRendering:
-    LDA #%10010000 ; V-Blank interrupt ON, Sprite size = 8x8, Nametable 0
-    STA ppu_ctrl_1 ; BG tiles = $1000, Spr tiles = $0000, PPU adr inc = 1B
-    STA PPU_CTRL_1
-    LDA #%00011110
-    STA PPU_CTRL_2
-    RTS
-    
-DrawScore:
-    LDA score
-    LDY #4 ; Offset for high digit
-    CMP #10
-    BCS @p1_two_digits
-    @p1_one_digit:
-        CLC
-        ADC #SPRITE_NUMBERS_OFFSET
-        STA score_tile ; low digit
-        LDA #SPRITE_NUMBERS_OFFSET
-        STA score_tile, Y ; high digit
-        
-        RTS
-    @p1_two_digits:
-        JSR @split_digits
-        
-        CLC
-        ADC #SPRITE_NUMBERS_OFFSET
-        STA score_tile ; low digit
-        
-        TXA
-        CLC
-        ADC #SPRITE_NUMBERS_OFFSET
-        STA score_tile, Y ; high digit
-        
-        RTS
-        
-    ; Input:    A = two-digit input
-    ; Output:   X = high digit
-    ;           A = low digit
-    @split_digits:
-        LDX #0
-        @check_again:
-            INX 
-            SEC
-            SBC #10
-            CMP #10
-            BCS @check_again
-        RTS
-
-WaitForPlayer:
-    ; Signal controller for read
-    LDA #1
-    STA PLAYER1_CTRL
-    LDA #0
-    STA PLAYER1_CTRL
-    
-    ; Read controller, sequence is as follows:
-    ; A, B, Select, Start, Up, Down, Left, Right
-    LDA PLAYER1_CTRL ; A
-    LDA PLAYER1_CTRL ; B
-    LDA PLAYER1_CTRL ; Select
-    LDA PLAYER1_CTRL ; Start
-    AND #1
-    BNE @stop_waiting
-    LDA PLAYER1_CTRL ; Up
-    AND #1
-    BNE @stop_waiting
-    LDA PLAYER1_CTRL ; Down
-    AND #1
-    BNE @stop_waiting
-    LDA PLAYER1_CTRL ; Left
-    AND #1
-    BNE @stop_waiting
-    LDA PLAYER1_CTRL ; Right
-    AND #1
-    BNE @stop_waiting
-    JMP WaitForPlayer
-    
-    @stop_waiting:
-    RTS
-
-; Sleep for amount of frames
-; given by X
+; Sleep for amount of frames given by X
 Sleep:
     @wait:
         LDA v_blank_complete
@@ -343,54 +233,6 @@ Sleep:
         BNE @wait
     RTS
 
+; Halt indefinitely (V-blank interrupt routine will still run)
 Halt: 
     JMP Halt
-
-; Adds tile to the list of background tiles to be updated,
-; indexed by A. Also calculates PPU addresses to take a load
-; off the V-Blank routine.
-UpdateBackgroundTile:
-    PHA
-    LDA first_brick_to_update
-    CMP last_brick_to_update
-    BNE @end_equality_check
-        LDA #0
-        STA first_brick_to_update
-        STA last_brick_to_update
-    @end_equality_check:
-
-    @add_tile_to_list:
-        PLA
-        LDX last_brick_to_update
-        STA bricks_to_update, X
-
-    @calculate_ppu_address:
-        LDX last_brick_to_update
-        LDA bricks_to_update, X
-        TAX                     ; X <- bricks_to_update[i]
-        LDA brick_x, X          ; A <- brick_x[X]
-        PHA                     ; push(brick_x[X])
-        LDA brick_y, X          ; A <- brick_y[X]
-        STA sub_routine_arg1
-        LDA #NAME_TABLE_WIDTH
-        STA sub_routine_arg2
-        @multiply_rows:
-            JSR MultiplyLong        ; XY <- brick_y[X] * NAME_TABLE_WIDTH
-        @add_column:
-            PLA                     ; A <- pull(brick_y[X])
-            JSR AccumulateLong
-        @add_name_table_offset:
-            LDA #NAMETABLE1_H
-            STA sub_routine_arg1
-            LDA #NAMETABLES_L
-            STA sub_routine_arg2
-            JSR AddLong
-        @store_addresses:
-            TXA
-            LDX last_brick_to_update
-            STA brick_to_update_high_addrs, X
-            TYA
-            STA brick_to_update_low_addrs, X
-        INX
-        STX last_brick_to_update
-    RTS
