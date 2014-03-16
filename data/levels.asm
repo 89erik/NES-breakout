@@ -1,14 +1,18 @@
 start_screen_n_data: 
-    .byte 7
+    .byte 11
 start_screen_data:
-    .byte $0C, $0E, N_CHARACTER
-    .byte $0D, $0E, E_CHARACTER
-    .byte $0E, $0E, S_CHARACTER
+    .byte $0A, $0E, N_CHARACTER
+    .byte $0B, $0E, E_CHARACTER
+    .byte $0C, $0E, S_CHARACTER
     
-    .byte $10, $0E, P_CHARACTER
-    .byte $11, $0E, O_CHARACTER
-    .byte $12, $0E, N_CHARACTER
-    .byte $13, $0E, G_CHARACTER
+    .byte $0E, $0E, B_CHARACTER
+    .byte $0F, $0E, R_CHARACTER
+    .byte $10, $0E, E_CHARACTER
+    .byte $11, $0E, A_CHARACTER
+    .byte $12, $0E, K_CHARACTER
+    .byte $13, $0E, O_CHARACTER
+    .byte $14, $0E, U_CHARACTER
+    .byte $15, $0E, T_CHARACTER
 
 level_1_n_data: 
     .byte 15
