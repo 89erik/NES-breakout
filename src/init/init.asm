@@ -143,27 +143,13 @@ JMP @done
         STA score_tile    ; low digit
         STA score_tile, X ; high digit
     
-    
     JSR StartScreen
     
 ; -[FILL BACKGROUND]-
     LDA #1
     STA level
     JSR SetAndLoadLevel
-    
-    LDX #0
-    STX first_brick_to_update
-    STX last_brick_to_update
-    @loop:
-        TXA
-        PHA
-        JSR UpdateBackgroundTile
-        PLA
-        TAX
-        INX
-        CPX n_bricks
-        BCC @loop
-    STX last_brick_to_update
+    JSR DrawLevel
     
     JSR DrawScore
     

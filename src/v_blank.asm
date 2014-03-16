@@ -17,7 +17,7 @@
         LDA #$02
         STA SPR_RAM_DMA
         
-        ; -[UPDATE BACKGROUND]- does not work in NTSC!
+        ; -[UPDATE BACKGROUND]-
         LDA first_brick_to_update
         CMP last_brick_to_update
         BEQ @end_update_background
