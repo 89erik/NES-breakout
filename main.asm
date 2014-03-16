@@ -30,8 +30,8 @@
         RTI
     
 .segment "DATA" 
-    .include "data/data.asm"
-    .include "data/level1.asm"
+    .include "data/palette.asm"
+    .include "data/levels.asm"
     
 .segment "ZERO_PAGE"
     .include "memory/ram.asm"               ; Variables in RAM

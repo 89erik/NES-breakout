@@ -3,9 +3,9 @@ FillBackground:
     STA PPU_ADDRESS
     LDA #NAMETABLES_L
     STA PPU_ADDRESS
-    
+
     JSR @fill_nametable
-    
+
     LDA #NAMETABLE2_H
     STA PPU_ADDRESS
     LDA #NAMETABLES_L

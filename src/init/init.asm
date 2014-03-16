@@ -22,7 +22,7 @@
     
     LDX #0
     @load_palette:
-        LDA Palette, X
+        LDA palette, X
         STA PPU_VALUE
         INX
         CPX #32
@@ -39,16 +39,6 @@
 ; Test area
 JMP @done
 
-    LDA #$00
-    STA sub_routine_arg1
-    LDA #$ef
-    STA sub_routine_arg2
-
-    LDX #$12
-    LDY #$43
-    JSR AddLong
-    @stop: JMP @stop
-    
 @done:
 ;--------------------------------------------------------
 
@@ -143,19 +133,17 @@ JMP @done
         STA score_tile    ; low digit
         STA score_tile, X ; high digit
     
+    JSR FillBackground
+    
+; -[INIT PPU (ENABLES RENDERING)]-
+    JSR EnablePpuRendering
+    
+; -[LAUNCH START SCREEN]-    
     JSR StartScreen
     
-; -[FILL BACKGROUND]-
+; -[LOAD LEVEL 1]-
     LDA #1
     STA level
     JSR SetAndLoadLevel
     JSR DrawLevel
-    
     JSR DrawScore
-    
-    
-    
-; -[INIT PPU (ENABLES RENDERING)]-
-    ;JSR EnablePpuRendering
-
-    

@@ -77,14 +77,14 @@ BallPlacement:
         @check_racket:
             CMP #RACKET_Y-SPRITE_SIZE + 1 + RACKET_MISS_TOLERANCE_Y
             BCS @past_racket
-            
+
             JSR RacketWidth     ; A <- len(racket_width)
             LSR                 ; A <- len(racket_width)/2
             CLC
             ADC #1+RACKET_MISS_TOLERANCE_X ; A <- (len(racket_width)/2) + 1 + general_tolerance
             PHA                 ; tolerance -> stack
-            
-            JSR CheckHitFlipper ; A <- diff(ball, racket)
+
+            JSR CheckHitRacket  ; A <- diff(ball, racket)
             PHA                 ; diff -> stack (stack = diff, tolerance, ...)
             JSR AbsoluteValue   ; A <- abs(diff)
             TAX                 ; X <- abs(diff)
@@ -94,23 +94,22 @@ BallPlacement:
             STA tmp             ; tmp <- tolerance
             CPX tmp             ; cmp(abs(diff), tolerance)
             BCS @end_of_task    ; diff > tolerance -> No hit (ignores for now)
-            
+
             TYA                 ; A <- diff
             JSR ASR             ; Reduce diff
             JSR ASR             ; Reduce diff
             JSR ASR             ; Reduce diff
-            
+
             CLC
             ADC x_velocity        ; Add diff to x_velocity
             STA x_velocity
             JMP @invert_y_velocity ; Bounce ball upwards
 
-        
         @past_racket:
             ; Ball is below racket limit, reached floor yet?
             CMP #FLOOR+SPRITE_SIZE
             BCC @end_of_task ; Hit
-            JSR FlipperNoHit ; No hit
+            JSR RacketMiss   ; No hit
             JMP @end_of_task
             
         @invert_y_velocity:
@@ -121,5 +120,4 @@ BallPlacement:
             STA y_velocity
             JMP @end_of_task
 
-    
-@end_of_task:
+    @end_of_task:

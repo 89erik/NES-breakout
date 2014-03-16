@@ -2,14 +2,9 @@ StartScreen:
     LDA #0
     STA level
     JSR SetAndLoadLevel
-    
 
     LDA #FALSE
     JSR @set_bricks_present
-    
-    JSR FillBackground
-    
-    JSR EnablePpuRendering
     
     LDX #1
     JSR Sleep
@@ -51,7 +46,7 @@ StartScreen:
             PHA
             JSR UpdateBackgroundTile
             
-            LDX #1
+            LDX #2
             JSR Sleep
             PLA
             TAX

@@ -1,46 +1,46 @@
  ; ---[ V-BLANK INTERRUPT ]---
-        PHA             ; Preserve A
-        TXA
-        PHA             ; Preserve X
-        TYA
-        PHA             ; Preserve Y
-        
-        LDA PPU_STATUS  ; Clear adress part latch
-        
-        ; -[UPDATE PPU CONTROL REGISTERS]-
-        LDA ppu_ctrl_1
-        STA PPU_CTRL_1      
-        
-        ; -[DMA OAM UPDATE]-
-        LDA #$00
-        STA SPR_RAM_ADDRESS
-        LDA #$02
-        STA SPR_RAM_DMA
-        
-        ; -[UPDATE BACKGROUND]-
-        LDA first_brick_to_update
-        CMP last_brick_to_update
-        BEQ @end_update_background
-            JSR @update_background
-        @end_update_background:
-                
-        ; -[SET SCROLL]-
-        LDA #0
-        STA PPU_SCROLL
-        STA PPU_SCROLL
+    PHA             ; Preserve A
+    TXA
+    PHA             ; Preserve X
+    TYA
+    PHA             ; Preserve Y
+    
+    LDA PPU_STATUS  ; Clear adress part latch
+    
+    ; -[UPDATE PPU CONTROL REGISTERS]-
+    LDA ppu_ctrl_1
+    STA PPU_CTRL_1      
+    
+    ; -[DMA OAM UPDATE]-
+    LDA #$00
+    STA SPR_RAM_ADDRESS
+    LDA #$02
+    STA SPR_RAM_DMA
+    
+    ; -[UPDATE BACKGROUND]-
+    LDA first_brick_to_update
+    CMP last_brick_to_update
+    BEQ @end_update_background
+        JSR @update_background
+    @end_update_background:
+            
+    ; -[SET SCROLL]-
+    LDA #0
+    STA PPU_SCROLL
+    STA PPU_SCROLL
 
-        ; -[PREPARE FOR RETURN]-
-        LDA #TRUE
-        STA v_blank_complete
+    ; -[PREPARE FOR RETURN]-
+    LDA #TRUE
+    STA v_blank_complete
 
-        PLA
-        TAY             ; Retrieve Y
-        PLA
-        TAX             ; Retrieve X
-        PLA             ; Retrieve A
-        RTI             ; ReTurn from Interrupt
-        
-        
+    PLA
+    TAY             ; Retrieve Y
+    PLA
+    TAX             ; Retrieve X
+    PLA             ; Retrieve A
+    RTI             ; ReTurn from Interrupt
+
+
     @update_background:
         @set_ppu_address:
             LDX first_brick_to_update

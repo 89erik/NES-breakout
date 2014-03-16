@@ -1,4 +1,5 @@
-start_screen_n_data: .byte 7
+start_screen_n_data: 
+    .byte 7
 start_screen_data:
     .byte $0C, $0E, N_CHARACTER
     .byte $0D, $0E, E_CHARACTER
@@ -9,7 +10,8 @@ start_screen_data:
     .byte $12, $0E, N_CHARACTER
     .byte $13, $0E, G_CHARACTER
 
-level_1_n_data: .byte 15
+level_1_n_data: 
+    .byte 15
 level_1_data:
     .byte 10, 10, A_CHARACTER
     .byte 10, 11, A_CHARACTER

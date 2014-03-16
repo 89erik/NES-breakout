@@ -1,9 +1,9 @@
 ; ---[ FLIPPER MISS ]---------------------
 ; Should be called whenever the ball gets below racket
 
-FlipperNoHit:
+RacketMiss:
     LDX score
-    BEQ GameOver
+    BEQ @game_over
     DEX
     STX score
     JSR DrawScore
@@ -11,8 +11,8 @@ FlipperNoHit:
     STA holding_ball
     RTS
 
-GameOver: 
-    LDA #0
-    STA x_velocity
-    STA y_velocity
-    RTS
+    @game_over: 
+        LDA #0
+        STA x_velocity
+        STA y_velocity
+        RTS
