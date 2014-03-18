@@ -51,7 +51,7 @@
         @store_tile_to_ppu:
             LDA bricks_to_update, X
             TAX                     ; X <- bricks_to_update[i]
-            LDA brick_present
+            LDA brick_present, X
             BEQ @brick_present
             @brick_not_present:
                 LDA #BLANK_BG_TILE
