@@ -66,49 +66,9 @@ JMP @done
         LDA #%00000001; (Palette 1)
         STA ball_attribute
         
-    ; PLAYER RACKET
-        LDX #0 ; offset
-        LDY #0 ; offset x4
-        @left_edge_of_racket:
-            LDA #RACKET_LEFT_TILE
-            STA player_tile, Y
-            LDA #RACKET_ATTRIBUTE
-            STA player_attribute, Y
-            JSR IncrementOffset
-
-        CPX #RACKET_START_WIDTH-1
-        BCS @right_edge_of_racket
-        
-        @center_racket:
-            LDA #RACKET_CENTER_TILE
-            STA player_tile, Y
-            LDA #RACKET_ATTRIBUTE
-            STA player_attribute, Y
-            JSR IncrementOffset
-            CPX #RACKET_START_WIDTH-1
-            BCC @center_racket
-        
-        @right_edge_of_racket:
-            LDA #RACKET_RIGHT_TILE
-            STA player_tile, Y
-            LDA #RACKET_ATTRIBUTE
-            STA player_attribute, Y
-            JSR IncrementOffset
-        
-        CPX #RACKET_MAX_WIDTH
-        BCS @done_init_racket
-        
-        @invisible_racket:
-            LDA #BLANK_SPRITE_TILE
-            STA player_tile, Y
-            LDA #RACKET_ATTRIBUTE
-            STA player_attribute, Y
-            JSR IncrementOffset
-            CPX #RACKET_MAX_WIDTH
-            BCC @invisible_racket
-        
-        JMP @done_init_racket
-    @done_init_racket:
+        LDA #RACKET_START_WIDTH
+        STA racket_width
+        JSR DrawRacket
     
     ; PLAYER 1 AND 2 SCORES 
         LDX #4 ; offset for high digit

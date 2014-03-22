@@ -119,3 +119,50 @@ UpdateBackgroundTile:
         INX
         STX last_brick_to_update
     RTS
+
+DrawRacket:
+    LDX racket_width
+    DEX
+    STX sub_routine_tmp
+    
+    LDX #0 ; offset
+    LDY #0 ; offset x4
+    @left_edge_of_racket:
+        LDA #RACKET_LEFT_TILE
+        STA player_tile, Y
+        LDA #RACKET_ATTRIBUTE
+        STA player_attribute, Y
+        JSR IncrementOffset
+
+    CPX sub_routine_tmp
+    BCS @right_edge_of_racket
+    
+    @center_racket:
+        LDA #RACKET_CENTER_TILE
+        STA player_tile, Y
+        LDA #RACKET_ATTRIBUTE
+        STA player_attribute, Y
+        JSR IncrementOffset
+        CPX sub_routine_tmp
+        BCC @center_racket
+    
+    @right_edge_of_racket:
+        LDA #RACKET_RIGHT_TILE
+        STA player_tile, Y
+        LDA #RACKET_ATTRIBUTE
+        STA player_attribute, Y
+        JSR IncrementOffset
+    
+    CPX #RACKET_MAX_WIDTH
+    BCS @done_drawing_racket
+    
+    @invisible_racket:
+        LDA #BLANK_SPRITE_TILE
+        STA player_tile, Y
+        LDA #RACKET_ATTRIBUTE
+        STA player_attribute, Y
+        JSR IncrementOffset
+        CPX #RACKET_MAX_WIDTH
+        BCC @invisible_racket
+    @done_drawing_racket:
+    RTS

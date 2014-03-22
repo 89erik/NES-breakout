@@ -7,6 +7,15 @@ RacketMiss:
     DEX
     STX score
     JSR DrawScore
+    
+    LDX racket_width
+    DEX
+    CPX #RACKET_MIN_WIDTH
+    BCC @end_if
+        STX racket_width
+        JSR DrawRacket
+    @end_if:
+
     LDA #TRUE
     STA holding_ball
     RTS
