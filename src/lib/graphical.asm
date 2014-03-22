@@ -120,6 +120,7 @@ UpdateBackgroundTile:
         STX last_brick_to_update
     RTS
 
+; Draws/updates racket on screen.
 DrawRacket:
     LDX racket_width
     DEX

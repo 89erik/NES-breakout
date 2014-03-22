@@ -65,7 +65,8 @@ JMP @done
         STA ball_tile
         LDA #%00000001; (Palette 1)
         STA ball_attribute
-        
+    
+    ; RACKET
         LDA #RACKET_START_WIDTH
         STA racket_width
         JSR DrawRacket
