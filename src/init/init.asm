@@ -57,6 +57,9 @@ JMP @done
     STA holding_ball
     LDA #INITIAL_SCORE
     STA score
+    LDA #0
+    STA first_brick_to_update
+    STA last_brick_to_update
     
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
