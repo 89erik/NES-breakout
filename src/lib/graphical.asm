@@ -167,3 +167,8 @@ DrawRacket:
         BCC @invisible_racket
     @done_drawing_racket:
     RTS
+
+@halt: 
+    LDX first_brick_to_update
+    LDY last_brick_to_update
+    JMP Halt
