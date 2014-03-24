@@ -1,5 +1,7 @@
-; A <- diff(ball, racket)
+; A <- diff(A, racket)
+; Input A represents x coordinate of left side of tile to check for
 CheckHitRacket:
+    PHA
     ; Center position of racket
     JSR RacketWidth     ; A <- len(racket_width)
     LSR                 ; A <- len(racket_width)/2
@@ -8,7 +10,7 @@ CheckHitRacket:
     STA tmp             ; tmp <- A == center of racket
 
     ; Position of ball
-    LDA ball_x
+    PLA
     CLC
     ADC #SPRITE_SIZE/2
 

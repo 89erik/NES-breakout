@@ -111,3 +111,12 @@ JMP @done
     JSR SetAndLoadLevel
     JSR DrawLevel
     JSR DrawScore
+
+; -[TOKEN DEMO (CAN BE REMOVED)]-
+    LDA #$05
+    STA token_tile
+    LDA #0
+    STA token_y
+    STA token_attribute
+    LDA #100
+    STA token_x

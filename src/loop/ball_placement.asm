@@ -78,12 +78,10 @@ BallPlacement:
             CMP #RACKET_Y-SPRITE_SIZE + 1 + RACKET_MISS_TOLERANCE_Y
             BCS @past_racket
 
-            JSR RacketWidth     ; A <- len(racket_width)
-            LSR                 ; A <- len(racket_width)/2
-            CLC
-            ADC #1+RACKET_MISS_TOLERANCE_X ; A <- (len(racket_width)/2) + 1 + general_tolerance
+            JSR RacketTolerance
             PHA                 ; tolerance -> stack
 
+            LDA ball_x
             JSR CheckHitRacket  ; A <- diff(ball, racket)
             PHA                 ; diff -> stack (stack = diff, tolerance, ...)
             JSR AbsoluteValue   ; A <- abs(diff)

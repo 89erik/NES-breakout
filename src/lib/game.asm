@@ -4,6 +4,33 @@ RacketWidth:
     LDX #SPRITE_SIZE
     JSR Multiply
     RTS
+
+RacketTolerance:
+    JSR RacketWidth     ; A <- len(racket_width)
+    LSR                 ; A <- len(racket_width)/2
+    CLC
+    ADC #1+RACKET_MISS_TOLERANCE_X ; A <- (len(racket_width)/2) + 1 + general_tolerance
+    RTS
+
+IncreaseRacketWidth:
+    LDX racket_width
+    INX
+    CPX #RACKET_MAX_WIDTH+1
+    BCS @end_if
+        STX racket_width
+        JSR DrawRacket
+    @end_if:
+    RTS
+
+DecreaseRacketWidth:
+    LDX racket_width
+    DEX
+    CPX #RACKET_MIN_WIDTH
+    BCC @end_if
+        STX racket_width
+        JSR DrawRacket
+    @end_if:
+    RTS
     
 ; X <- X+1
 ; Y <- X*4

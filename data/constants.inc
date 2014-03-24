@@ -39,6 +39,7 @@ RACKET_MISS_TOLERANCE_Y = 4
 
 RACKET_SPEED            = 4
 BALL_SPEED_Y            = 2
+TOKEN_SPEED             = 3
 
 INITIAL_SCORE           = 10
 
