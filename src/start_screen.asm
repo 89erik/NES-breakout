@@ -17,6 +17,7 @@ StartScreen:
         JSR @set_bricks_present
         JSR @update_screen
 
+
         LDA #FALSE
         JSR @set_bricks_present
         JSR @update_screen
@@ -27,16 +28,19 @@ StartScreen:
             DEX
             TXA
             BNE @update_loop_outer
-        
-        LDA #TRUE
-        JSR @set_bricks_present
-        JSR @update_screen
+
+    LDA #TRUE
+    JSR @set_bricks_present
+    JSR @update_screen
+
     
-        JSR WaitForPlayer
-        LDA #FALSE
-        JSR @set_bricks_present
-        JSR @update_screen
-        RTS
+    JSR WaitForPlayer
+    LDX #1
+    JSR Sleep
+    LDA #FALSE
+    JSR @set_bricks_present
+    JSR @update_screen
+    RTS
 
     @update_screen:
         LDX #0
@@ -46,18 +50,17 @@ StartScreen:
             PHA
             JSR UpdateBackgroundTile
             
-            LDX #2
+            LDX #1
             JSR Sleep
             PLA
             TAX
             INX
             CMP n_bricks
             BCC @update_loop_inner
-        
         RTS
-        
+
     ; All brick_present <- A
-    @set_bricks_present:    
+    @set_bricks_present:
         LDX #0
         @loop:
             STA brick_present, X
