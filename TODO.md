@@ -1,7 +1,5 @@
 ### To do
-* Add bonus tokens
-    * Racket width increase/decrease
-    * Ball speed increase/decrease
+* Fix speed increase token bug: ball does not stop on roof.
 * Fix screen bugs
     * Upper left corner BG tile
     * Upper left corner sprite

@@ -33,6 +33,10 @@ MoveToken:
                 BEQ @increase_racket
                 CMP #DECREASE_RACKET_TOKEN
                 BEQ @decrease_racket
+                CMP #INCREASE_SPEED_TOKEN
+                BEQ @increase_speed
+                CMP #DECREASE_SPEED_TOKEN
+                BEQ @decrease_speed
                     @no_match: JMP @no_match
                 
                 @increase_racket:
@@ -41,7 +45,22 @@ MoveToken:
                 @decrease_racket:
                     JSR DecreaseRacketWidth
                     JMP @destroy_token
-
+                @increase_speed:
+                    LDX ball_speed
+                    INX
+                    STX ball_speed
+                    LDA y_velocity
+                    JSR SignedIncrease
+                    STA y_velocity
+                    JMP @destroy_token
+                @decrease_speed:
+                    LDX ball_speed
+                    DEX
+                    STX ball_speed
+                    LDA y_velocity
+                    JSR SignedDecrease
+                    STA y_velocity
+                    JMP @destroy_token
     @past_racket:
         ; Token is below racket limit, reached floor yet?
         CMP #FLOOR+SPRITE_SIZE

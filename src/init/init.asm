@@ -47,7 +47,8 @@ JMP @done
     STA bg_color
     LDA #0
     STA x_velocity
-    LDA #BALL_SPEED_Y
+    LDA #BALL_DEFAULT_SPEED_Y
+    STA ball_speed
     STA y_velocity
     LDA #RACKET_START_WIDTH
     STA racket_width
@@ -113,7 +114,7 @@ JMP @done
     JSR DrawScore
 
 ; -[TOKEN DEMO (CAN BE REMOVED)]-
-    LDA #DECREASE_RACKET_TOKEN
+    LDA #INCREASE_SPEED_TOKEN
     STA token_tile
     LDA #0
     STA token_y

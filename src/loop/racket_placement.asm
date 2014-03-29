@@ -42,7 +42,9 @@ RacketPlacement:
         BEQ @ignore_A_button ; not pushed
             LDA #FALSE
             STA holding_ball
-            LDA #-BALL_SPEED_Y
+            LDA #0
+            SEC
+            SBC ball_speed
             STA y_velocity
 
     @ignore_A_button:

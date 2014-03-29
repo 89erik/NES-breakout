@@ -56,7 +56,49 @@ SignedComparison:
         LDA sub_routine_arg1
         CMP sub_routine_arg2
         RTS
-    
+
+; If A is positive:
+; A <- A+1
+; If A is negative:
+; A <- A-1
+SignedIncrease:
+    PHA
+    JSR SignedIsNegative
+    BEQ @decrease
+    @increase:
+        PLA
+        TAX
+        INX
+        TXA
+        RTS
+    @decrease:
+        PLA
+        TAX
+        DEX
+        TXA
+        RTS
+
+; If A is positive:
+; A <- A-1
+; If A is negative:
+; A <- A+1
+SignedDecrease:
+    PHA
+    JSR SignedIsNegative
+    BEQ @increase
+    @decrease:
+        PLA
+        TAX
+        DEX
+        TXA
+        RTS
+    @increase:
+        PLA
+        TAX
+        INX
+        TXA
+        RTS
+
 ; A <- A/2  
 ; Arithmetic Shift Right
 ASR:
