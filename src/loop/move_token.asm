@@ -27,8 +27,21 @@ MoveToken:
             STA tmp             ; tmp <- tolerance
             CPX tmp             ; cmp(abs(diff), tolerance)
             BCS @end_of_sub_routine ; diff > tolerance -> No hit (ignores for now)
-                JSR IncreaseRacketWidth
-                JMP @destroy_token
+            @racket_hit:
+                LDA token_tile
+                CMP #INCREASE_RACKET_TOKEN
+                BEQ @increase_racket
+                CMP #DECREASE_RACKET_TOKEN
+                BEQ @decrease_racket
+                    @no_match: JMP @no_match
+                
+                @increase_racket:
+                    JSR IncreaseRacketWidth
+                    JMP @destroy_token
+                @decrease_racket:
+                    JSR DecreaseRacketWidth
+                    JMP @destroy_token
+
     @past_racket:
         ; Token is below racket limit, reached floor yet?
         CMP #FLOOR+SPRITE_SIZE

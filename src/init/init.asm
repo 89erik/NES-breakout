@@ -113,7 +113,7 @@ JMP @done
     JSR DrawScore
 
 ; -[TOKEN DEMO (CAN BE REMOVED)]-
-    LDA #$05
+    LDA #DECREASE_RACKET_TOKEN
     STA token_tile
     LDA #0
     STA token_y
