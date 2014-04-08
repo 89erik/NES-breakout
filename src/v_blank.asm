@@ -25,9 +25,11 @@
     @end_update_background:
             
     ; -[SET SCROLL]-
+    LDA scroll
+    STA PPU_SCROLL
     LDA #0
     STA PPU_SCROLL
-    STA PPU_SCROLL
+    
 
     ; -[PREPARE FOR RETURN]-
     LDA #TRUE

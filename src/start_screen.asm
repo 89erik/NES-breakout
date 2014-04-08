@@ -48,6 +48,7 @@ StartScreen:
             LDY #0
             TXA
             PHA
+            LDX #FALSE
             JSR UpdateBackgroundTile
             
             LDX #1

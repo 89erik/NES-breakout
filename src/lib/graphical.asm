@@ -55,27 +55,40 @@ DrawScore:
 
 ; Queues all bricks of the currently loaded level to
 ; be updated by the V-blank.
+; A = write to next nametable? (TRUE/FALSE)
 DrawLevel:
-    LDX #0
-    STX first_brick_to_update
-    STX last_brick_to_update
+    STA sub_routine_arg1
+    LDY #0
+    STY first_brick_to_update
+    STY last_brick_to_update
     @loop:
-        TXA
+        LDA sub_routine_arg1
+        PHA
+        TAX ; X <- write to next nametable?
+        TYA ; A <- tile index
         PHA
         JSR UpdateBackgroundTile
         PLA
-        TAX
-        INX
-        CPX n_bricks
+        TAY
+        PLA
+        STA sub_routine_arg1
+        INY
+        CPY n_bricks
         BCC @loop
-    STX last_brick_to_update
+    STY last_brick_to_update
     RTS
 
 ; Adds tile to the list of background tiles to be updated,
 ; indexed by A. Also calculates PPU addresses to take a load
 ; off the V-Blank routine.
+; A = background tile index
+; X = write to next nametable? (TRUE/FALSE)
 UpdateBackgroundTile:
-    PHA
+    TAY
+    TXA
+    PHA     ; Stack = X
+    TYA
+    PHA     ; Stack = A, X
     LDA first_brick_to_update
     CMP last_brick_to_update
     BNE @end_equality_check
@@ -105,7 +118,26 @@ UpdateBackgroundTile:
             PLA                     ; A <- pull(brick_y[X])
             JSR AccumulateLong
         @add_name_table_offset:
-            LDA #NAMETABLE1_H
+            PLA
+            BNE @current
+            @next:
+                LDA ppu_ctrl_1
+                AND #%00000001
+                BEQ @use_nametable2
+                JMP @use_nametable1
+            @current:
+                LDA ppu_ctrl_1
+                AND #%00000001
+                BEQ @use_nametable1
+                JMP @use_nametable2
+                
+            @use_nametable1:
+                LDA #NAMETABLE1_H
+                JMP @end_set_nametable
+            @use_nametable2:
+                LDA #NAMETABLE2_H
+            @end_set_nametable:
+            
             STA sub_routine_arg1
             LDA #NAMETABLES_L
             STA sub_routine_arg2
@@ -172,3 +204,9 @@ DrawRacket:
     LDX first_brick_to_update
     LDY last_brick_to_update
     JMP Halt
+
+WaitForBackgroundDraw:
+    LDA first_brick_to_update
+    CMP last_brick_to_update
+    BNE WaitForBackgroundDraw
+    RTS

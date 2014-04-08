@@ -1,3 +1,5 @@
+levels_n:     .byte 3
+
 start_screen_n_data: 
     .byte 11
 start_screen_data:
@@ -32,3 +34,21 @@ level_1_data:
     .byte 12, 12, C_CHARACTER
     .byte 12, 13, C_CHARACTER
     .byte 12, 14, C_CHARACTER
+    
+level_2_n_data: 
+    .byte 12
+level_2_data:
+    .byte $0C, $0C, E_CHARACTER
+    .byte $0D, $0C, R_CHARACTER
+    .byte $0E, $0C, I_CHARACTER
+    .byte $0F, $0C, K_CHARACTER
+    
+    .byte $0C, $0D, E_CHARACTER
+    .byte $0D, $0D, R_CHARACTER
+    .byte $0E, $0D, I_CHARACTER
+    .byte $0F, $0D, K_CHARACTER
+
+    .byte $0C, $0E, E_CHARACTER
+    .byte $0D, $0E, R_CHARACTER
+    .byte $0E, $0E, I_CHARACTER
+    .byte $0F, $0E, K_CHARACTER

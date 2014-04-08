@@ -61,7 +61,8 @@ JMP @done
     LDA #0
     STA first_brick_to_update
     STA last_brick_to_update
-    
+    LDA #0
+    STA scroll
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
     ; BALL
@@ -110,14 +111,9 @@ JMP @done
     LDA #1
     STA level
     JSR SetAndLoadLevel
+    LDA #FALSE
     JSR DrawLevel
     JSR DrawScore
+    
 
-; -[TOKEN DEMO (CAN BE REMOVED)]-
-    LDA #INCREASE_SPEED_TOKEN
-    STA token_tile
-    LDA #0
-    STA token_y
-    STA token_attribute
-    LDA #100
-    STA token_x
+    

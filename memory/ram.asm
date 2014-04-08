@@ -9,6 +9,7 @@
     ; System state
     bg_color:                   .byte 0
     v_blank_complete:           .byte 0
+    scroll:                     .byte 0
     
     ; Registers
     ppu_ctrl_1:                 .byte 0
