@@ -48,7 +48,14 @@ RacketPlacement:
             STA y_velocity
 
     @ignore_A_button:
+        LDX #FALSE
         LDA PLAYER1_CTRL ; B
+        AND #1
+        BEQ @end_check_b
+            LDX #TRUE
+        @end_check_b:
+        TXA
+        PHA
         LDA PLAYER1_CTRL ; Select
         LDA PLAYER1_CTRL ; Start
         LDA PLAYER1_CTRL ; Up
@@ -58,9 +65,18 @@ RacketPlacement:
         LDA PLAYER1_CTRL ; Left
         AND #1
         BEQ @right_button
-        LDA racket_pos
-        SEC
-        SBC #RACKET_SPEED
+        PLA
+        BEQ @fast_l
+        @slow_l:
+            LDA racket_pos
+            SEC
+            SBC #RACKET_SPEED/2
+            JMP @end_speed_check_l
+        @fast_l:
+            LDA racket_pos
+            SEC
+            SBC #RACKET_SPEED
+        @end_speed_check_l:
         CMP #LEFT_WALL
         BCS @left_move_in_bounds
         LDA #LEFT_WALL
@@ -82,9 +98,18 @@ RacketPlacement:
         SBC tmp
         STA tmp
 
-        LDA racket_pos
-        CLC
-        ADC #RACKET_SPEED
+        PLA
+        BEQ @fast_r
+        @slow_r:
+            LDA racket_pos
+            CLC
+            ADC #RACKET_SPEED/2
+            JMP @end_speed_check_r
+        @fast_r:
+            LDA racket_pos
+            CLC
+            ADC #RACKET_SPEED
+        @end_speed_check_r:
 
         CMP tmp ;#RIGHT_WALL - RACKET_WIDTH + SPRITE_SIZE
         BCC @right_move_in_bounds
