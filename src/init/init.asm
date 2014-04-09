@@ -65,17 +65,6 @@ JMP @done
     STA scroll
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
-    ; BALL
-        LDA #BALL_TILE
-        STA ball_tile
-        LDA #%00000001; (Palette 1)
-        STA ball_attribute
-    
-    ; RACKET
-        LDA #RACKET_START_WIDTH
-        STA racket_width
-        JSR DrawRacket
-    
     ; PLAYER 1 AND 2 SCORES 
         LDX #4 ; offset for high digit
         
@@ -106,7 +95,7 @@ JMP @done
     
 ; -[LAUNCH START SCREEN]-    
     JSR StartScreen
-    
+
 ; -[LOAD LEVEL 1]-
     LDA #1
     STA level
@@ -114,6 +103,15 @@ JMP @done
     LDA #FALSE
     JSR DrawLevel
     JSR DrawScore
-    
 
-    
+
+; -[SHOW BALL]-
+    LDA #BALL_TILE
+    STA ball_tile
+    LDA #%00000001; (Palette 1)
+    STA ball_attribute
+
+; -[SHOW RACKET]-
+    LDA #RACKET_START_WIDTH
+    STA racket_width
+    JSR DrawRacket
