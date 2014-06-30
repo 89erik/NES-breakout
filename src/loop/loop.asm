@@ -26,3 +26,4 @@ MainLoop:
     ; Subroutines
     .include "src/loop/racket_miss.asm"            ; Subroutine used by "ball_placement.asm"
     .include "src/loop/check_hit_racket.asm"       ; Subroutine used by "ball_placement.asm"
+    .include "src/loop/check_hit_brick.asm"

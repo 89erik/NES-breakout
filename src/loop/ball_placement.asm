@@ -23,26 +23,94 @@ BallPlacement:
         JMP @end_of_task
 
     @move_ball:
+        LDX #0
+        LDY #0
+        @move_more:
+            JSR @ApproachX
+            JSR @ApproachY
+            JSR CheckHitBrick
+            BEQ @stop            ; DEBUG !!!
+            CPY y_velocity
+            BNE @move_more
+            CPX x_velocity
+            BNE @move_more        
+        JMP @end_approach_routines
+        
+            @ApproachX:
+                CPX x_velocity
+                BEQ @end_approach_x
+                
+                LDA x_velocity
+                JSR SignedIsNegative
+                BEQ @x_negative
+                @x_positive:
+                    TXA
+                    LDX ball_x
+                    INX
+                    STX ball_x
+                    TAX
+                    INX
+                    JMP @end_approach_x
+                @x_negative:
+                    TXA
+                    LDX ball_x
+                    DEX
+                    STX ball_x
+                    TAX
+                    DEX
+                @end_approach_x:
+                    RTS
+                    
+            @ApproachY:
+                CPY y_velocity
+                BEQ @end_approach_y
+                
+                LDA y_velocity
+                JSR SignedIsNegative
+                BEQ @y_negative
+                @y_positive:
+                    TYA
+                    LDY ball_y
+                    INY
+                    STY ball_y
+                    TAY
+                    INY
+                    JMP @end_approach_y
+                @y_negative:
+                    TYA
+                    LDY ball_y
+                    DEY
+                    STY ball_y
+                    TAY
+                    DEY
+                @end_approach_y:
+                    RTS
+                    
+        @stop:  LDA #$fa
+                LDY #$fa
+                LDX #$fa
+                JMP @stop
+        @end_approach_routines:
+            
         ; -[UPDATE X]-
         LDA ball_x      ; Load x position
         CLC             ; Clear carry bit
         ADC x_velocity    ; Add velocity to position
-        TAX             ; Copy A to X
         STA ball_x      ; Update OAM
         
         ; -[UPDATE Y]-
         LDA ball_y      ; Load y position
         CLC             ; Clear carry bit
         ADC y_velocity    ; Add velocity to position
-        TAY             ; Copy A to X
         STA ball_y      ; Update OAM    
     
     
     ; ---[ HIT ONE OF THE WALLS? ]---
     @check_x_edge:
-        CPX #LEFT_WALL
+        LDA ball_x
+        CMP #LEFT_WALL
         BCC @wall_hit
-        CPX #RIGHT_WALL
+        CMP #RIGHT_WALL
         BCS @wall_hit
         JMP @check_y_edge
 
