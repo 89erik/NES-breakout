@@ -67,7 +67,7 @@ CheckHitBrick:
             JSR Multiply
         @in_bounds_top:
             CLC
-            ADC #SPRITE_SIZE-2
+            ADC #SPRITE_SIZE-1
             CMP ball_y
             BCC @ball_below
         @in_bounds_below:
