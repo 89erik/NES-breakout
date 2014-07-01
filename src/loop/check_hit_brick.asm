@@ -13,6 +13,44 @@ CheckHitBrick:
             JSR @InBoundsVertical
             BNE @no_hit
             @hit:
+                @kill_brick:
+                    LDA #FALSE
+                    STA brick_present, X
+                    TXA
+                    LDX #FALSE
+                    JSR UpdateBackgroundTile
+                @bounce_direction:
+                    JSR @XDiff
+                    JSR AbsoluteValue
+                    STA sub_routine_tmp
+                    JSR @YDiff
+                    JSR AbsoluteValue
+                    CMP sub_routine_tmp
+                    BCC @horizontal_bounce
+                    BEQ @bounce_both
+                    @vertical_bounce:
+                       LDA #0
+                        SEC
+                        SBC x_velocity
+                        STA x_velocity
+                        JMP @end_bounce_direction
+                    @horizontal_bounce:
+                        LDA #0
+                        SEC
+                        SBC y_velocity
+                        STA y_velocity
+                        JMP @end_bounce_direction
+                    @bounce_both:
+                        LDA #0
+                        SEC
+                        SBC y_velocity
+                        STA y_velocity
+                        LDA #0
+                        SEC
+                        SBC x_velocity
+                        STA x_velocity
+                @end_bounce_direction:
+                
                 PLA
                 TAX ; Retrieve X
                 LDA #TRUE
@@ -86,4 +124,36 @@ CheckHitBrick:
             PLA
             TAX     ; Retrieve X
             LDA #FALSE
+            RTS
+            
+    @XDiff:
+        ;@calculate_brick_coordinate_x:
+            TXA
+            PHA     ; Preserve X
+            LDA brick_x, X
+            LDX #SPRITE_SIZE
+            JSR Multiply
+        @calculate_x_diff:
+            SEC
+            SBC ball_x
+            TAY
+            PLA
+            TAX     ; Retrieve X
+            TYA
+            RTS
+            
+    @YDiff:
+        ;@calculate_brick_coordinate_y:
+            TXA
+            PHA     ; Preserve X
+            LDA brick_y, X
+            LDX #SPRITE_SIZE
+            JSR Multiply
+        @calculate_y_diff:
+            SEC
+            SBC ball_y
+            TAY
+            PLA
+            TAX     ; Retrieve X
+            TYA
             RTS

@@ -29,7 +29,7 @@ BallPlacement:
             JSR @ApproachX
             JSR @ApproachY
             JSR CheckHitBrick
-            BEQ @stop            ; DEBUG !!!
+            BEQ @end_approach_routines
             CPY y_velocity
             BNE @move_more
             CPX x_velocity
