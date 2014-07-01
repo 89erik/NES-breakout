@@ -90,20 +90,7 @@ BallPlacement:
                 LDY #$fa
                 LDX #$fa
                 JMP @stop
-        @end_approach_routines:
-            
-        ; -[UPDATE X]-
-        LDA ball_x      ; Load x position
-        CLC             ; Clear carry bit
-        ADC x_velocity    ; Add velocity to position
-        STA ball_x      ; Update OAM
-        
-        ; -[UPDATE Y]-
-        LDA ball_y      ; Load y position
-        CLC             ; Clear carry bit
-        ADC y_velocity    ; Add velocity to position
-        STA ball_y      ; Update OAM    
-    
+        @end_approach_routines:   
     
     ; ---[ HIT ONE OF THE WALLS? ]---
     @check_x_edge:
