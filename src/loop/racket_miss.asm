@@ -12,7 +12,7 @@ RacketMiss:
 
     LDA #TRUE
     STA holding_ball
-    JSR NextLevel           ;DEMO! can be deleted
+    ;JSR NextLevel           ;DEMO! can be deleted
     RTS
 
     @game_over: 
