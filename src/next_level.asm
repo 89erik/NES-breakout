@@ -1,4 +1,18 @@
 NextLevel:
+	; Hold ball
+	LDA #TRUE
+    STA holding_ball
+	
+	; Hide ball
+	LDA #$FF
+	STA ball_x
+	STA ball_y
+
+	; Default racket width
+	LDA #RACKET_START_WIDTH
+    STA racket_width
+    JSR DrawRacket
+	
     LDX level
     INX
     CPX levels_n

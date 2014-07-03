@@ -13,12 +13,8 @@ CheckHitBrick:
             JSR @InBoundsVertical
             BNE @no_hit
             @hit:
-                @kill_brick:
-                    LDA #FALSE
-                    STA brick_present, X
-                    TXA
-                    LDX #FALSE
-                    JSR UpdateBackgroundTile
+				JSR KillBrick
+				BEQ @end_check_hit_bricks
                 @bounce_direction:
                     JSR @XDiff
                     JSR AbsoluteValue
@@ -60,6 +56,7 @@ CheckHitBrick:
                 CPX n_bricks
                 BCC @iterate_bricks
         @no_hits:
+		@end_check_hit_bricks:
             PLA
             TAX ; Retrieve X
             LDA #FALSE
@@ -157,3 +154,30 @@ CheckHitBrick:
             TAX     ; Retrieve X
             TYA
             RTS
+			
+; Kills brick and goes to next level if no more bricks.
+; If next level:
+; 	A <- TRUE
+; Else
+;	A <- FALSE
+KillBrick:
+	LDA #FALSE
+	STA brick_present, X
+	TXA
+	LDX #FALSE
+	JSR UpdateBackgroundTile
+	
+	LDX #0
+	@check_bricks:
+		LDA brick_present, X
+		BNE @continue_check_bricks
+			LDA #FALSE
+			RTS
+		@continue_check_bricks:
+			INX
+			CPX n_bricks
+			BCS @check_bricks
+	JSR NextLevel
+	LDA #TRUE
+	RTS
+		
