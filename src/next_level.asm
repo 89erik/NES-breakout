@@ -3,16 +3,17 @@ NextLevel:
 	LDA #TRUE
     STA holding_ball
 	
-	; Hide ball
+	; Hide ball (while scrolling)
 	LDA #$FF
 	STA ball_x
 	STA ball_y
 
-	; Default racket width
+	; Reset racket width to default
 	LDA #RACKET_START_WIDTH
     STA racket_width
     JSR DrawRacket
 	
+	; Load next level into next nametable
     LDX level
     INX
     CPX levels_n
@@ -23,22 +24,11 @@ NextLevel:
     LDA #TRUE
     JSR DrawLevel
 
-
-    LDA scroll
-    CMP #$FF
-    BNE @scroll
-    @reset_scroll:
-        LDA ppu_ctrl_1
-        EOR #%00000001
-        STA ppu_ctrl_1
-        LDA #0
-        STA scroll
-        LDX #1
-        JSR Sleep
-    @scroll:
+	; Scroll to next nametable
+	@scroll:
         LDA scroll
         CMP #$FF
-        BEQ @end_of_sub_routine
+        BEQ @done_scrolling
         CLC
         ADC #SCROLL_SPEED
         BCC @no_overflow
@@ -48,5 +38,11 @@ NextLevel:
         LDX #1
         JSR Sleep
         JMP @scroll
-    @end_of_sub_routine:
-    RTS
+	@done_scrolling:
+	@set_to_next_nametable:
+		LDA #0
+		STA scroll
+		LDA ppu_ctrl_1
+        EOR #%00000001
+        STA ppu_ctrl_1
+	RTS

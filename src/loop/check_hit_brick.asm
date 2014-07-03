@@ -158,7 +158,7 @@ CheckHitBrick:
 ; Kills brick and goes to next level if no more bricks.
 ; If next level:
 ; 	A <- TRUE
-; Else
+; else
 ;	A <- FALSE
 KillBrick:
 	LDA #FALSE
@@ -176,7 +176,7 @@ KillBrick:
 		@continue_check_bricks:
 			INX
 			CPX n_bricks
-			BCS @check_bricks
+			BCC @check_bricks
 	JSR NextLevel
 	LDA #TRUE
 	RTS
