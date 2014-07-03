@@ -7,6 +7,11 @@
     
     LDA PPU_STATUS  ; Clear adress part latch
     
+	; -[ REFRESH VRAM ADDRESS]-
+	LDA #0
+	STA PPU_ADDRESS
+	STA PPU_ADDRESS
+	
     ; -[UPDATE PPU CONTROL REGISTERS]-
     LDA ppu_ctrl_1
     STA PPU_CTRL_1      
