@@ -58,18 +58,16 @@ DrawScore:
 ; A = write to next nametable? (TRUE/FALSE)
 DrawLevel:
     STA sub_routine_arg1
-    LDY #0
-    STY first_brick_to_update
-    STY last_brick_to_update
+    LDY #0 ; Tile index
     @loop:
         LDA sub_routine_arg1
         PHA
         TAX ; X <- write to next nametable?
         TYA ; A <- tile index
-        PHA
+		PHA ; Preserve Y
         JSR UpdateBackgroundTile
-        PLA
-        TAY
+		PLA
+		TAY ; Retrieve Y
         PLA
         STA sub_routine_arg1
         INY
@@ -199,11 +197,6 @@ DrawRacket:
         BCC @invisible_racket
     @done_drawing_racket:
     RTS
-
-@halt: 
-    LDX first_brick_to_update
-    LDY last_brick_to_update
-    JMP Halt
 
 WaitForBackgroundDraw:
     LDA first_brick_to_update

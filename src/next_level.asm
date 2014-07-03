@@ -1,4 +1,7 @@
 NextLevel:
+	; Complete any queued drawings
+	JSR WaitForBackgroundDraw
+	
 	; Hold ball
 	LDA #TRUE
     STA holding_ball
@@ -23,6 +26,7 @@ NextLevel:
     JSR SetAndLoadLevel
     LDA #TRUE
     JSR DrawLevel
+	
 
 	; Scroll to next nametable
 	@scroll:
@@ -39,6 +43,9 @@ NextLevel:
         JSR Sleep
         JMP @scroll
 	@done_scrolling:
+	
+	JSR WaitForBackgroundDraw
+	
 	@set_to_next_nametable:
 		LDA #0
 		STA scroll
