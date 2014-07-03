@@ -1,6 +1,8 @@
 CheckHitBrick:
     TXA
     PHA ; Preserve X
+	TYA
+	PHA ; Preserve Y
     LDX #0
     CPX n_bricks
     BEQ @no_hits
@@ -25,7 +27,7 @@ CheckHitBrick:
                     BCC @horizontal_bounce
                     BEQ @bounce_both
                     @vertical_bounce:
-                       LDA #0
+						LDA #0
                         SEC
                         SBC x_velocity
                         STA x_velocity
@@ -47,6 +49,8 @@ CheckHitBrick:
                         STA x_velocity
                 @end_bounce_direction:
                 
+				PLA
+				TAY ; Retrieve Y
                 PLA
                 TAX ; Retrieve X
                 LDA #TRUE
@@ -57,6 +61,8 @@ CheckHitBrick:
                 BCC @iterate_bricks
         @no_hits:
 		@end_check_hit_bricks:
+			PLA
+			TAY ; Retrieve Y
             PLA
             TAX ; Retrieve X
             LDA #FALSE
@@ -155,29 +161,46 @@ CheckHitBrick:
             TYA
             RTS
 			
-; Kills brick and goes to next level if no more bricks.
-; If next level:
+; Kills brick and goes to next level if this was last brick.
+; If last brick:
 ; 	A <- TRUE
 ; else
 ;	A <- FALSE
 KillBrick:
+	; Kill the brick
+	TXA
+	PHA ; Preserve X
 	LDA #FALSE
 	STA brick_present, X
 	TXA
 	LDX #FALSE
 	JSR UpdateBackgroundTile
+	PLA
+	TAX ; Retrieve X
 	
-	LDX #0
+	; Check if more bricks left
+	LDY #0
 	@check_bricks:
-		LDA brick_present, X
-		BNE @continue_check_bricks
+		LDA brick_present, Y
+		BEQ @more_bricks_exist
+		@continue_check_bricks:
+			INY
+			CPY n_bricks
+			BCC @check_bricks
+		@no_more_bricks:
+			JSR NextLevel
+			LDA #TRUE
+			RTS	
+		@more_bricks_exist:
+			@dispense_token:
+				LDY kill_count
+				INY
+				STY kill_count
+				CPY #2
+				BCC @end_dispense_token
+					LDY #0
+					STY kill_count
+					JSR DispenseToken
+				@end_dispense_token:
 			LDA #FALSE
 			RTS
-		@continue_check_bricks:
-			INX
-			CPX n_bricks
-			BCC @check_bricks
-	JSR NextLevel
-	LDA #TRUE
-	RTS
-		

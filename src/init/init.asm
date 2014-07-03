@@ -63,6 +63,7 @@ JMP @done
     STA last_brick_to_update
     LDA #0
     STA scroll
+	STA kill_count
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
     ; PLAYER 1 AND 2 SCORES 

@@ -3,7 +3,7 @@
 ; ------------------------------------------------- ;
 ; This is a part of the RAM segment and everything  ;
 ; in this file represents places in the memory,     ;
-; and can be refered to by the labels.              ;
+; and can be referred to by the labels.             ;
 ; ------------------------------------------------- ;
 
     ; System state
@@ -19,6 +19,7 @@
     racket_width:               .byte 0
     score:                      .byte 0
     holding_ball:               .byte 0
+    kill_count:	                .byte 0
     
     ; The ball
     x_velocity:                 .byte 0

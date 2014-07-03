@@ -45,6 +45,8 @@ INITIAL_SCORE           = 10
 
 SCROLL_SPEED            = 8
 
+TOKEN_FREQUENCY			= 2
+
 ; ---[ ARCHITECTURAL CONSTANTS ]---
 LOWEST_SIGNED           = -128
 HIGHEST_SIGNED          = 127

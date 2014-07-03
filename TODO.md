@@ -5,6 +5,7 @@
     * Very buged when changing levels.
 * Look into Multiply sub routine: there might be a problem when X=1.
 * Fix speed increase token bug: ball does not stop on roof.
+* Token dispenser only dispenses one token type.
 * Fix screen bugs
     * Upper left corner BG tile
 * when changing levels, bricks of previous levels remains visible
