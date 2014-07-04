@@ -3,7 +3,6 @@
 ### Bugs
 * Fix speed increase token bug: ball does not stop on roof.
 * Fix screen bugs
-    * Upper left corner BG tile
     * When scrolling to next level, the level can be seen loading
       on both namespaces
 

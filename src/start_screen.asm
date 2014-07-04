@@ -50,13 +50,11 @@ StartScreen:
             PHA
             LDX #FALSE
             JSR UpdateBackgroundTile
-            
-            LDX #1
-            JSR Sleep
+            JSR WaitForBackgroundDraw
             PLA
             TAX
             INX
-            CMP n_bricks
+            CPX n_bricks
             BCC @update_loop_inner
         RTS
 
