@@ -137,7 +137,7 @@ Multiply:
     BEQ @zero
     
     STA sub_routine_tmp
-    DEX
+	LDA #0
     @loop:
         CLC
         ADC sub_routine_tmp

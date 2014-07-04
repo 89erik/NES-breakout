@@ -2,7 +2,6 @@
 * check_hit_brick: 
     * it first checks if there is a hit, then it calculates the bounce 
       direction. Look into possibility of an optimization.
-* Look into Multiply sub routine: there might be a problem when X=1.
 * Fix speed increase token bug: ball does not stop on roof.
 * Token dispenser only dispenses one token type.
 * Fix screen bugs
