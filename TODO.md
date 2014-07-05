@@ -1,10 +1,10 @@
 ## To do
 
 ### Bugs
-* Fix speed increase token bug: ball does not stop on roof.
 * Fix screen bugs
     * When scrolling to next level, the level can be seen loading
       on both namespaces
+    * Sometimes random parts of the background disappears
 
 ### New functionality
 * Token dispenser only dispenses one token type.

@@ -125,9 +125,15 @@ BallPlacement:
             LDA ball_y
             CMP #ROOF            ; Hit roof
             BEQ @invert_y_velocity
+			BCC @overhit
             CMP #FLOOR+1         ; Past roof, underflow
-            BCS @invert_y_velocity
+            BCS @overhit
             JMP @end_of_task     ; No hit
+			@overhit:
+				LDA #ROOF
+				STA ball_y
+				JMP @invert_y_velocity
+				
     
         @check_racket:
             CMP #RACKET_Y-SPRITE_SIZE + 1 + RACKET_MISS_TOLERANCE_Y
