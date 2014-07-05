@@ -6,9 +6,9 @@
 ; ------------------------------------------------ ;
 
 ; -[WAIT 2 FRAMES FOR PPU BOOT]-
-:   LDA $2002
+:   LDA PPU_STATUS
     BPL :-
-:   LDA $2002
+:   LDA PPU_STATUS
     BPL :-
 
 ; -[TURN OFF RENDERING]-
