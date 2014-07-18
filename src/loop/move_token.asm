@@ -1,6 +1,6 @@
 MoveToken:
     LDA token_tile
-    BEQ @end_of_sub_routine
+    BEQ @skip_to_end
         LDA token_y
         CLC
         ADC #TOKEN_SPEED
@@ -8,6 +8,7 @@ MoveToken:
         
         CMP #RACKET_Y-SPRITE_SIZE
         BCS @check_racket
+        @skip_to_end:
             JMP @end_of_sub_routine
 
     @check_racket:
@@ -28,6 +29,7 @@ MoveToken:
             CPX tmp             ; cmp(abs(diff), tolerance)
             BCS @end_of_sub_routine ; diff > tolerance -> No hit (ignores for now)
             @racket_hit:
+                JSR PlayCatchTokenSound
                 LDA token_tile
                 CMP #INCREASE_RACKET_TOKEN
                 BEQ @increase_racket

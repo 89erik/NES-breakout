@@ -2,6 +2,7 @@
 ; Should be called whenever the ball gets below racket
 
 RacketMiss:
+    JSR PlayDeathSound
     LDX score
     BEQ @game_over
     DEX

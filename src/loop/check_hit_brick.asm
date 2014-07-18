@@ -167,6 +167,8 @@ CheckHitBrick:
 ; else
 ;	A <- FALSE
 KillBrick:
+    JSR PlayKillBrickSound
+
 	; Kill the brick
 	TXA
 	PHA ; Preserve X

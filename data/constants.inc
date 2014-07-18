@@ -13,6 +13,19 @@ PLAYER2_CTRL            = $4017
 
 SPR_RAM_DMA             = $4014
 
+APU_SQUARE_1_1          = $4000
+APU_SQUARE_1_2          = $4001
+APU_SQUARE_1_3          = $4002
+APU_SQUARE_1_4          = $4003
+
+APU_SQUARE_2_1          = $4004
+APU_SQUARE_2_2          = $4005
+APU_SQUARE_2_3          = $4006
+APU_SQUARE_2_4          = $4007
+
+APU_CTRL                = $4015
+APU_FRAME_COUNTER       = $4017
+
 NAME_TABLE_1            = $20
 NAME_TABLE_2            = $24
 

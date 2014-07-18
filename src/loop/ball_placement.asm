@@ -106,6 +106,7 @@ BallPlacement:
             SEC
             SBC x_velocity
             STA x_velocity ; Inverts x_velocity
+            JSR PlayBounceSound
             JMP @end_of_task ; JMP to @check_y_edge?
 
         
@@ -177,6 +178,7 @@ BallPlacement:
             SEC
             SBC y_velocity
             STA y_velocity
+            JSR PlayBounceSound
             JMP @end_of_task
 
     @end_of_task:

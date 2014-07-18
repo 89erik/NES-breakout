@@ -22,6 +22,7 @@
         .include "src/init/fill_background.asm"
         .include "src/start_screen.asm"
         .include "src/next_level.asm"
+        .include "src/sound/sounds.asm"
     Start:
         .include "src/init/init.asm"        ; Initialization procedure
         .include "src/loop/loop.asm"        ; Physics to be performed per framerate
