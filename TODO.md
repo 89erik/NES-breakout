@@ -5,6 +5,7 @@
     * When scrolling to next level, the level can be seen loading
       on both namespaces
     * Sometimes random parts of the background disappears
+* Killed bricks disappears, but remains in play
 
 ### New functionality
 * Token dispenser only dispenses one token type.
