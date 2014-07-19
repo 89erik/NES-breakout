@@ -40,6 +40,7 @@ RacketPlacement:
     BNE @ignore_A_button
         AND #1
         BEQ @ignore_A_button ; not pushed
+            JSR PlayBounceSound
             LDA #FALSE
             STA holding_ball
             LDA #0

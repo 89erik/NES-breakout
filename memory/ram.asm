@@ -52,3 +52,7 @@
     level_data:                 .word 0
 
     fp:                         .word 0
+
+    ; Music
+    music_index:                .word 0
+    note_index:                 .word 0

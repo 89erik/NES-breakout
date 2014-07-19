@@ -1,4 +1,5 @@
 .include "data/constants.inc"
+.include "data/sound_constants.inc"
 
 .segment "INES"
     .byte "NES",$1A,1,1,1

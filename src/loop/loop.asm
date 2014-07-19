@@ -21,6 +21,7 @@ MainLoop:
     .include "src/loop/racket_placement.asm"        ; Places the rackets
     .include "src/loop/ball_placement.asm"          ; Places the ball
     .include "src/loop/move_token.asm"
+    JSR PlayGuitarProSong
     JMP MainLoop
 
     ; Subroutines
