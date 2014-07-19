@@ -64,6 +64,7 @@ JMP @done
     LDA #0
     STA scroll
 	STA kill_count
+    STA music_index
     
 ; -[INIT GAME-INDEPENDENT OAM DATA]-
     ; PLAYER 1 AND 2 SCORES 
